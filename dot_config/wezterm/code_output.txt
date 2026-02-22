@@ -1,0 +1,2019 @@
+=== /Users/sic/.config/wezterm/colors/custom.lua ===
+-- A slightly altered version of catppuccin macchiato
+-- stylua: ignore
+local macchiato = {
+  rosewater = '#f4dbd6',
+  flamingo  = '#f0c6c6',
+  pink      = '#f5bde6',
+  mauve     = '#c6a0f6',
+  red       = '#ed8796',
+  maroon    = '#ee99a0',
+  peach     = '#f5a97f',
+  yellow    = '#eed49f',
+  green     = '#a6da95',
+  teal      = '#8bd5ca',
+  sky       = '#91d7e3',
+  sapphire  = '#7dc4e4',
+  blue      = '#8aadf4',
+  lavender  = '#b7bdf8',
+  text      = '#cad3f5',
+  subtext1  = '#b8c0e0',
+  subtext0  = '#a5adcb',
+  overlay2  = '#939ab7',
+  overlay1  = '#8087a2',
+  overlay0  = '#6e738d',
+  surface2  = '#5b6078',
+  surface1  = '#494d64',
+  surface0  = '#363a4f',
+  base      = '#24273a',
+  mantle    = '#1e2030',
+  crust     = '#181926',
+}
+
+local colorscheme = {
+  foreground = macchiato.text,
+  background = macchiato.base,
+  cursor_bg = macchiato.rosewater,
+  cursor_border = macchiato.rosewater,
+  cursor_fg = macchiato.crust,
+  selection_bg = macchiato.surface2,
+  selection_fg = macchiato.text,
+  ansi = {
+    macchiato.base,   -- black
+    macchiato.red,    -- red
+    macchiato.green,  -- green
+    macchiato.yellow, -- yellow
+    macchiato.blue,   -- blue
+    macchiato.mauve,  -- magenta/purple
+    macchiato.sky,    -- cyan
+    macchiato.text,   -- white
+  },
+  brights = {
+    macchiato.overlay1, -- black
+    macchiato.maroon,   -- red
+    macchiato.green,    -- green
+    macchiato.yellow,   -- yellow
+    macchiato.blue,     -- blue
+    macchiato.mauve,    -- magenta/purple
+    macchiato.sky,      -- cyan
+    macchiato.text,     -- white
+  },
+  tab_bar = {
+    background = 'rgba(36, 39, 58, 0.4)',
+    active_tab = {
+      bg_color = macchiato.surface2,
+      fg_color = macchiato.text,
+    },
+    inactive_tab = {
+      bg_color = macchiato.surface0,
+      fg_color = macchiato.subtext1,
+    },
+    inactive_tab_hover = {
+      bg_color = macchiato.surface0,
+      fg_color = macchiato.text,
+    },
+    new_tab = {
+      bg_color = macchiato.base,
+      fg_color = macchiato.text,
+    },
+    new_tab_hover = {
+      bg_color = macchiato.mantle,
+      fg_color = macchiato.text,
+      italic = true,
+    },
+  },
+  visual_bell = macchiato.red,
+  indexed = {
+    [16] = macchiato.peach,
+    [17] = macchiato.rosewater,
+  },
+  scrollbar_thumb = macchiato.surface2,
+  split = macchiato.overlay0,
+  compose_cursor = macchiato.flamingo,
+}
+
+return colorscheme
+
+
+=== /Users/sic/.config/wezterm/config/appearance.lua ===
+local gpu_adapters = require('utils.gpu-adapter')
+local backdrops = require('utils.backdrops')
+local colors = require('colors.custom')
+local fonts = require('config.fonts')
+-- Default background behavior (true = no images). Flip to false to show images on startup.
+local start_in_focus_mode = true
+
+return {
+  max_fps = 120,
+  front_end = 'WebGpu', ---@type 'WebGpu' | 'OpenGL' | 'Software'
+  webgpu_power_preference = 'HighPerformance',
+  webgpu_preferred_adapter = gpu_adapters:pick_best(),
+  -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Dx12', 'IntegratedGpu'),
+  -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Gl', 'Other'),
+  underline_thickness = '1.5pt',
+
+  -- cursor
+  animation_fps = 120,
+  cursor_blink_ease_in = 'EaseOut',
+  cursor_blink_ease_out = 'EaseOut',
+  default_cursor_style = 'BlinkingBlock',
+  cursor_blink_rate = 650,
+
+  -- color scheme
+  colors = colors,
+
+  -- background: pass in `true` if you want wezterm to start with focus mode on (no bg images)
+  background = backdrops:initial_options(start_in_focus_mode),
+
+  -- scrollbar
+  enable_scroll_bar = true,
+
+  -- tab bar
+  enable_tab_bar = true,
+  hide_tab_bar_if_only_one_tab = false,
+  use_fancy_tab_bar = false,
+  tab_max_width = 20,
+  show_tab_index_in_tab_bar = true,
+  switch_to_last_active_tab_when_closing_tab = true,
+
+  -- command palette
+  command_palette_fg_color = '#b4befe',
+  command_palette_bg_color = '#11111b',
+  command_palette_font_size = 12,
+  command_palette_rows = 25,
+
+  -- window
+  window_padding = {
+    left = 4,
+    right = 4,
+    top = 10,
+    bottom = 7.5,
+  },
+  adjust_window_size_when_changing_font_size = false,
+  window_close_confirmation = 'NeverPrompt',
+  window_frame = {
+    active_titlebar_bg = '#090909',
+    font = fonts.font,
+    font_size = fonts.font_size,
+  },
+  -- inactive_pane_hsb = {
+  --    saturation = 0.9,
+  --    brightness = 0.65,
+  -- },
+  inactive_pane_hsb = {
+    saturation = 1,
+    brightness = 1,
+  },
+
+  visual_bell = {
+    fade_in_function = 'EaseIn',
+    fade_in_duration_ms = 250,
+    fade_out_function = 'EaseOut',
+    fade_out_duration_ms = 250,
+    target = 'CursorColor',
+  },
+}
+
+
+=== /Users/sic/.config/wezterm/config/bindings.lua ===
+local wezterm = require('wezterm')
+local backdrops = require('utils.backdrops')
+local act = wezterm.action
+
+local mod = {}
+
+mod.SUPER = 'SUPER'
+mod.SUPER_REV = 'SUPER|SHIFT'
+
+-- stylua: ignore
+local keys = {
+  -- misc/useful --
+  { key = 'F1', mods = 'NONE', action = 'ActivateCopyMode' },
+  { key = 'F2', mods = 'NONE', action = act.ActivateCommandPalette },
+  { key = 'F3', mods = 'NONE', action = act.ShowLauncher },
+  { key = 'F4', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
+  {
+    key = 'F5',
+    mods = 'NONE',
+    action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
+  },
+  { key = 'F11', mods = 'NONE',    action = act.ToggleFullScreen },
+  { key = 'F12', mods = 'NONE',    action = act.ShowDebugOverlay },
+  { key = 'f',   mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },
+  {
+    key = 'u',
+    mods = mod.SUPER_REV,
+    action = wezterm.action.QuickSelectArgs({
+      label = 'open url',
+      patterns = {
+        '\\((https?://\\S+)\\)',
+        '\\[(https?://\\S+)\\]',
+        '\\{(https?://\\S+)\\}',
+        '<(https?://\\S+)>',
+        '\\bhttps?://\\S+[)/a-zA-Z0-9-]+'
+      },
+      action = wezterm.action_callback(function(window, pane)
+        local url = window:get_selection_text_for_pane(pane)
+        wezterm.log_info('opening: ' .. url)
+        wezterm.open_with(url)
+      end),
+    }),
+  },
+
+  -- cursor movement --
+  { key = 'LeftArrow',  mods = mod.SUPER,     action = act.SendString '\u{1b}OH' },
+  { key = 'RightArrow', mods = mod.SUPER,     action = act.SendString '\u{1b}OF' },
+  { key = 'Backspace',  mods = mod.SUPER,     action = act.SendString '\u{15}' },
+
+  -- copy/paste --
+  { key = 'c',          mods = 'CTRL|SHIFT',  action = act.CopyTo('Clipboard') },
+  { key = 'v',          mods = 'CTRL|SHIFT',  action = act.PasteFrom('Clipboard') },
+
+  -- tabs --
+  -- tabs: spawn+close
+  { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
+  { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
+
+  -- tabs: navigation
+  { key = '[',          mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
+  { key = ']',          mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
+  { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
+  { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+
+  -- tab: title
+  { key = '0',          mods = mod.SUPER,     action = act.EmitEvent('tabs.manual-update-tab-title') },
+  { key = '0',          mods = mod.SUPER_REV, action = act.EmitEvent('tabs.reset-tab-title') },
+
+  -- tab: hide tab-bar
+  { key = '9',          mods = mod.SUPER,     action = act.EmitEvent('tabs.toggle-tab-bar'), },
+
+  -- window --
+  -- window: spawn windows
+  { key = 'n',          mods = mod.SUPER,     action = act.SpawnWindow },
+  { key = 'q',          mods = mod.SUPER,     action = act.QuitApplication },
+
+  -- window: zoom window
+  {
+    key = '-',
+    mods = mod.SUPER,
+    action = wezterm.action_callback(function(window, _pane)
+      local dimensions = window:get_dimensions()
+      if dimensions.is_full_screen then
+        return
+      end
+      local new_width = dimensions.pixel_width - 50
+      local new_height = dimensions.pixel_height - 50
+      window:set_inner_size(new_width, new_height)
+    end)
+  },
+  {
+    key = '=',
+    mods = mod.SUPER,
+    action = wezterm.action_callback(function(window, _pane)
+      local dimensions = window:get_dimensions()
+      if dimensions.is_full_screen then
+        return
+      end
+      local new_width = dimensions.pixel_width + 50
+      local new_height = dimensions.pixel_height + 50
+      window:set_inner_size(new_width, new_height)
+    end)
+  },
+  {
+    key = 'Enter',
+    mods = mod.SUPER_REV,
+    action = wezterm.action_callback(function(window, _pane)
+      window:maximize()
+    end)
+  },
+
+  -- background controls --
+  {
+    key = [[/]],
+    mods = mod.SUPER,
+    action = wezterm.action_callback(function(window, _pane)
+      backdrops:random(window)
+    end),
+  },
+  {
+    key = [[,]],
+    mods = mod.SUPER,
+    action = wezterm.action_callback(function(window, _pane)
+      backdrops:cycle_back(window)
+    end),
+  },
+  {
+    key = [[.]],
+    mods = mod.SUPER,
+    action = wezterm.action_callback(function(window, _pane)
+      backdrops:cycle_forward(window)
+    end),
+  },
+  {
+    key = [[/]],
+    mods = mod.SUPER_REV,
+    action = act.InputSelector({
+      title = 'InputSelector: Select Background',
+      choices = backdrops:choices(),
+      fuzzy = true,
+      fuzzy_description = 'Select Background: ',
+      action = wezterm.action_callback(function(window, _pane, idx)
+        if not idx then
+          return
+        end
+        ---@diagnostic disable-next-line: param-type-mismatch
+        backdrops:set_img(window, tonumber(idx))
+      end),
+    }),
+  },
+  {
+    key = 'b',
+    mods = mod.SUPER,
+    action = wezterm.action_callback(function(window, _pane)
+      backdrops:toggle_focus(window)
+    end)
+  },
+
+  -- panes --
+  -- panes: split panes
+  {
+    key = 'd',
+    mods = mod.SUPER,
+    action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
+  },
+  {
+    key = 'd',
+    mods = mod.SUPER_REV,
+    action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
+  },
+
+  -- panes: zoom+close pane
+  { key = 'Enter',     mods = mod.SUPER, action = act.TogglePaneZoomState },
+  { key = 'w',         mods = mod.SUPER, action = act.CloseCurrentPane({ confirm = false }) },
+
+  -- panes: scroll pane
+  { key = 'UpArrow',   mods = mod.SUPER, action = act.ScrollByPage(-0.75) },
+  { key = 'DownArrow', mods = mod.SUPER, action = act.ScrollByPage(0.75) },
+
+  -- key-tables --
+  -- resizes fonts
+  {
+    key = 'f',
+    mods = 'LEADER',
+    action = act.ActivateKeyTable({
+      name = 'resize_font',
+      one_shot = false,
+      timeout_milliseconds = 1000,
+    }),
+  },
+  -- resize panes
+  {
+    key = 'p',
+    mods = 'LEADER',
+    action = act.ActivateKeyTable({
+      name = 'resize_pane',
+      one_shot = false,
+      timeout_milliseconds = 1000,
+    }),
+  },
+
+  --clear
+  {
+    key = 'k',
+    mods = mod.SUPER,
+    action = act.ClearScrollback 'ScrollbackAndViewport',
+  },
+}
+
+local mouse_bindings = {
+  -- Ctrl-click will open the link under the mouse cursor
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'CTRL',
+    action = act.OpenLinkAtMouseCursor,
+  },
+}
+
+return {
+  disable_default_key_bindings = true,
+  -- disable_default_mouse_bindings = true,
+  leader = { key = 'Space', mods = mod.SUPER_REV },
+  keys = keys,
+  mouse_bindings = mouse_bindings,
+}
+
+
+=== /Users/sic/.config/wezterm/config/domains.lua ===
+local options = {
+  -- ref: https://wezfurlong.org/wezterm/config/lua/SshDomain.html
+  ssh_domains = {},
+}
+
+return options
+
+
+=== /Users/sic/.config/wezterm/config/fonts.lua ===
+local wezterm = require('wezterm')
+local platform = require('utils.platform')
+
+local font_family = 'MesloLGS Nerd Font Mono'
+
+local font_size = 18
+
+return {
+  font = wezterm.font({
+    family = font_family,
+    weight = 'Medium',
+  }),
+  font_size = font_size,
+
+  --ref: https://wezfurlong.org/wezterm/config/lua/config/freetype_pcf_long_family_names.html#why-doesnt-wezterm-use-the-distro-freetype-or-match-its-configuration
+  freetype_load_target = 'Normal', ---@type 'Normal'|'Light'|'Mono'|'HorizontalLcd'
+  freetype_render_target = 'Normal', ---@type 'Normal'|'Light'|'Mono'|'HorizontalLcd'
+}
+
+
+=== /Users/sic/.config/wezterm/config/general.lua ===
+return {
+  -- behaviours
+  automatically_reload_config = true,
+  exit_behavior = 'CloseOnCleanExit',  -- if the shell program exited with a successful status
+  exit_behavior_messaging = 'Verbose',
+  status_update_interval = 1000,
+  audible_bell = 'Disabled',
+
+  scrollback_lines = 20000,
+
+  hyperlink_rules = {
+    -- Matches: a URL in parens: (URL)
+    {
+      regex = '\\((\\w+://\\S+)\\)',
+      format = '$1',
+      highlight = 1,
+    },
+    -- Matches: a URL in brackets: [URL]
+    {
+      regex = '\\[(\\w+://\\S+)\\]',
+      format = '$1',
+      highlight = 1,
+    },
+    -- Matches: a URL in curly braces: {URL}
+    {
+      regex = '\\{(\\w+://\\S+)\\}',
+      format = '$1',
+      highlight = 1,
+    },
+    -- Matches: a URL in angle brackets: <URL>
+    {
+      regex = '<(\\w+://\\S+)>',
+      format = '$1',
+      highlight = 1,
+    },
+    -- Then handle URLs not wrapped in brackets
+    {
+      regex = '\\b\\w+://\\S+[)/a-zA-Z0-9-]+',
+      format = '$0',
+    },
+    -- implicit mailto link
+    {
+      regex = '\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b',
+      format = 'mailto:$0',
+    },
+  },
+}
+
+
+=== /Users/sic/.config/wezterm/config/init.lua ===
+local wezterm = require('wezterm')
+
+---@class Config
+---@field options table
+local Config = {}
+Config.__index = Config
+
+---Initialize Config
+---@return Config
+function Config:init()
+  local config = setmetatable({ options = {} }, self)
+  return config
+end
+
+---Append to `Config.options`
+---@param new_options table new options to append
+---@return Config
+function Config:append(new_options)
+  for k, v in pairs(new_options) do
+    if self.options[k] ~= nil then
+      wezterm.log_warn(
+        'Duplicate config option detected: ',
+        { old = self.options[k], new = new_options[k] }
+      )
+      goto continue
+    end
+    self.options[k] = v
+    ::continue::
+  end
+  return self
+end
+
+return Config
+
+
+=== /Users/sic/.config/wezterm/config/launch.lua ===
+local options = {
+  default_prog = {},
+  launch_menu = {},
+}
+
+options.default_prog = { 'zsh', '-l' }
+options.launch_menu = {
+  { label = 'Bash',    args = { 'bash', '-l' } },
+  { label = 'Nushell', args = { '/opt/homebrew/bin/nu', '-l' } },
+  { label = 'Zsh',     args = { 'zsh', '-l' } },
+}
+
+return options
+
+
+=== /Users/sic/.config/wezterm/events/gui-startup.lua ===
+local wezterm = require('wezterm')
+local mux = wezterm.mux
+
+local M = {}
+
+-- Default window size on startup (pixels). Adjust to taste.
+local DEFAULT_WIDTH = 1240
+local DEFAULT_HEIGHT = 960
+
+M.setup = function()
+  wezterm.on('gui-startup', function(cmd)
+    local _, _, window = mux.spawn_window(cmd or {})
+    window:gui_window():set_inner_size(DEFAULT_WIDTH, DEFAULT_HEIGHT)
+  end)
+end
+
+return M
+
+
+=== /Users/sic/.config/wezterm/events/left-status.lua ===
+local wezterm = require('wezterm')
+local Cells = require('utils.cells')
+
+local nf = wezterm.nerdfonts
+local attr = Cells.attr
+
+local M = {}
+
+local GLYPH_SEMI_CIRCLE_LEFT = nf.ple_left_half_circle_thick --[[ '' ]]
+local GLYPH_SEMI_CIRCLE_RIGHT = nf.ple_right_half_circle_thick --[[ '' ]]
+local GLYPH_KEY_TABLE = nf.md_table_key --[[ '󱏅' ]]
+local GLYPH_KEY = nf.md_key --[[ '󰌆' ]]
+
+---@type table<string, Cells.SegmentColors>
+local colors = {
+  default = { bg = '#fab387', fg = '#1c1b19' },
+  scircle = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#fab387' },
+}
+
+local cells = Cells:new()
+
+cells
+    :add_segment(1, GLYPH_SEMI_CIRCLE_LEFT, colors.scircle, attr(attr.intensity('Bold')))
+    :add_segment(2, ' ', colors.default, attr(attr.intensity('Bold')))
+    :add_segment(3, ' ', colors.default, attr(attr.intensity('Bold')))
+    :add_segment(4, GLYPH_SEMI_CIRCLE_RIGHT, colors.scircle, attr(attr.intensity('Bold')))
+
+M.setup = function()
+  wezterm.on('update-right-status', function(window, _pane)
+    local name = window:active_key_table()
+    local res = {}
+
+    if name then
+      cells
+          :update_segment_text(2, GLYPH_KEY_TABLE)
+          :update_segment_text(3, ' ' .. string.upper(name))
+      res = cells:render_all()
+    end
+
+    if window:leader_is_active() then
+      cells:update_segment_text(2, GLYPH_KEY):update_segment_text(3, ' ')
+      res = cells:render_all()
+    end
+    window:set_left_status(wezterm.format(res))
+  end)
+end
+
+return M
+
+
+=== /Users/sic/.config/wezterm/events/new-tab-button.lua ===
+local wezterm = require('wezterm')
+local launch_menu = require('config.launch').launch_menu
+local domains = require('config.domains')
+local Cells = require('utils.cells')
+
+local nf = wezterm.nerdfonts
+local act = wezterm.action
+local attr = Cells.attr
+
+local M = {}
+
+---@type table<string, Cells.SegmentColors>
+-- stylua: ignore
+local colors = {
+  label_text   = { fg = '#CDD6F4' },
+  icon_default = { fg = '#89B4FA' },
+  icon_ssh     = { fg = '#F38BA8' },
+}
+
+local cells = Cells:new()
+    :add_segment('icon_default', ' ' .. nf.oct_terminal .. ' ', colors.icon_default)
+    :add_segment('icon_ssh', ' ' .. nf.md_ssh .. ' ', colors.icon_ssh)
+    :add_segment('label_text', '', colors.label_text, attr(attr.intensity('Bold')))
+
+local function build_choices()
+  local choices = {}
+  local choices_data = {}
+  local idx = 1
+
+  -- Add launch menu items (DefaultDomain)
+  for _, v in ipairs(launch_menu) do
+    cells:update_segment_text('label_text', v.label)
+
+    table.insert(choices, {
+      id = tostring(idx),
+      label = wezterm.format(cells:render({ 'icon_default', 'label_text' })),
+    })
+    table.insert(choices_data, {
+      args = v.args,
+      domain = 'DefaultDomain',
+    })
+    idx = idx + 1
+  end
+
+  -- Add SSH domains
+  for _, v in ipairs(domains.ssh_domains) do
+    cells:update_segment_text('label_text', v.name)
+    table.insert(choices, {
+      id = tostring(idx),
+      label = wezterm.format(cells:render({ 'icon_ssh', 'label_text' })),
+    })
+    table.insert(choices_data, {
+      domain = { DomainName = v.name },
+    })
+    idx = idx + 1
+  end
+
+  return choices, choices_data
+end
+
+local choices, choices_data = build_choices()
+
+M.setup = function()
+  wezterm.on('new-tab-button-click', function(window, pane, button, default_action)
+    if default_action and button == 'Left' then
+      window:perform_action(default_action, pane)
+    end
+
+    if default_action and button == 'Right' then
+      window:perform_action(
+        act.InputSelector({
+          title = 'InputSelector: Launch Menu',
+          choices = choices,
+          fuzzy = true,
+          fuzzy_description = nf.md_rocket .. ' Select a lauch item: ',
+          action = wezterm.action_callback(function(_window, _pane, id, label)
+            if not id and not label then
+              return
+            else
+              wezterm.log_info('you selected ', id, label)
+              wezterm.log_info(choices_data[tonumber(id)])
+              window:perform_action(
+                act.SpawnCommandInNewTab(choices_data[tonumber(id)]),
+                pane
+              )
+            end
+          end),
+        }),
+        pane
+      )
+    end
+    return false
+  end)
+end
+
+return M
+
+
+=== /Users/sic/.config/wezterm/events/right-status.lua ===
+local wezterm = require('wezterm')
+local umath = require('utils.math')
+local Cells = require('utils.cells')
+local macchiato = require('colors.custom')
+local OptsValidator = require('utils.opts-validator')
+
+
+
+---@alias Event.RightStatusOptions { date_format?: string }
+
+---Setup options for the right status bar
+local EVENT_OPTS = {}
+
+---@type OptsSchema
+EVENT_OPTS.schema = {
+  {
+    name = 'date_format',
+    type = 'string',
+    default = '%a %H:%M:%S',
+  },
+}
+EVENT_OPTS.validator = OptsValidator:new(EVENT_OPTS.schema)
+
+local nf = wezterm.nerdfonts
+local attr = Cells.attr
+
+local M = {}
+
+local ICON_SEPARATOR = nf.oct_dash
+local ICON_DATE = nf.fa_calendar
+
+---@type string[]
+local discharging_icons = {
+  nf.md_battery_10,
+  nf.md_battery_20,
+  nf.md_battery_30,
+  nf.md_battery_40,
+  nf.md_battery_50,
+  nf.md_battery_60,
+  nf.md_battery_70,
+  nf.md_battery_80,
+  nf.md_battery_90,
+  nf.md_battery,
+}
+---@type string[]
+local charging_icons = {
+  nf.md_battery_charging_10,
+  nf.md_battery_charging_20,
+  nf.md_battery_charging_30,
+  nf.md_battery_charging_40,
+  nf.md_battery_charging_50,
+  nf.md_battery_charging_60,
+  nf.md_battery_charging_70,
+  nf.md_battery_charging_80,
+  nf.md_battery_charging_90,
+  nf.md_battery_charging,
+}
+
+---@type table<string, Cells.SegmentColors>
+-- stylua: ignore
+local colors = {
+  date      = { fg = '#fab387', bg = macchiato.base },
+  battery   = { fg = '#f9e2af', bg = macchiato.base },
+  separator = { fg = '#74c7ec', bg = macchiato.base }
+}
+
+local cells = Cells:new()
+
+cells
+    :add_segment('date_icon', ICON_DATE .. '  ', colors.date, attr(attr.intensity('Bold')))
+    :add_segment('date_text', '', colors.date, attr(attr.intensity('Bold')))
+    :add_segment('separator', ' ' .. ICON_SEPARATOR .. '  ', colors.separator)
+    :add_segment('battery_icon', '', colors.battery)
+    :add_segment('battery_text', '', colors.battery, attr(attr.intensity('Bold')))
+
+---@return string?, string?
+local function battery_info()
+  local batteries = wezterm.battery_info()
+  if #batteries == 0 then
+    return nil, nil
+  end
+
+  local b = batteries[1]
+  local idx = umath.clamp(
+    umath.round(b.state_of_charge * 10),
+    1,
+    10
+  )
+
+  local charge = string.format('%.0f%%', b.state_of_charge * 100)
+  local icon = (b.state == 'Charging')
+      and charging_icons[idx]
+      or discharging_icons[idx]
+
+  return charge, icon .. ' '
+end
+
+---@param opts? Event.RightStatusOptions Default: {date_format = '%a %H:%M:%S'}
+M.setup = function(opts)
+  local valid_opts, err = EVENT_OPTS.validator:validate(opts or {})
+
+  if err then
+    wezterm.log_error(err)
+  end
+
+  wezterm.on('update-right-status', function(window, _pane)
+    local battery_text, battery_icon = battery_info()
+
+    cells
+        :update_segment_text('date_text', wezterm.strftime(valid_opts.date_format))
+        :update_segment_text('battery_icon', battery_icon or '')
+        :update_segment_text('battery_text', battery_text or '')
+
+    local segments = { 'date_icon', 'date_text' }
+    if battery_text and battery_icon then
+      table.insert(segments, 'separator')
+      table.insert(segments, 'battery_icon')
+      table.insert(segments, 'battery_text')
+    end
+
+    window:set_right_status(wezterm.format(cells:render(segments)))
+  end)
+end
+
+return M
+
+
+=== /Users/sic/.config/wezterm/events/tab-title.lua ===
+------------------------------------------------------------------------------------------
+-- Inspired by https://github.com/wez/wezterm/discussions/628#discussioncomment-1874614 --
+------------------------------------------------------------------------------------------
+
+local wezterm = require('wezterm')
+local Cells = require('utils.cells')
+local OptsValidator = require('utils.opts-validator')
+
+---
+-- =======================================
+-- Defining event setup options and schema
+-- =======================================
+
+---@alias Event.TabTitleOptions { unseen_icon: 'circle' | 'numbered_circle' | 'numbered_box', hide_active_tab_unseen: boolean }
+
+---Setup options for the tab title
+local EVENT_OPTS = {}
+
+---@type OptsSchema
+EVENT_OPTS.schema = {
+   {
+      name = 'unseen_icon',
+      type = 'string',
+      enum = { 'circle', 'numbered_circle', 'numbered_box' },
+      default = 'circle',
+   },
+   {
+      name = 'hide_active_tab_unseen',
+      type = 'boolean',
+      default = true,
+   },
+}
+EVENT_OPTS.validator = OptsValidator:new(EVENT_OPTS.schema)
+
+---
+-- ===================
+-- Constants and icons
+-- ===================
+
+local nf = wezterm.nerdfonts
+
+local M = {}
+
+local GLYPH_SCIRCLE_LEFT = nf.ple_left_half_circle_thick --[[  ]]
+local GLYPH_SCIRCLE_RIGHT = nf.ple_right_half_circle_thick --[[  ]]
+local GLYPH_CIRCLE = nf.fa_circle --[[  ]]
+local GLYPH_ADMIN = nf.md_shield_half_full --[[ 󰞀 ]]
+local GLYPH_DEBUG = nf.fa_bug --[[  ]]
+-- local GLYPH_SEARCH = nf.fa_search --[[  ]]
+local GLYPH_SEARCH = '🔭'
+
+local GLYPH_UNSEEN_NUMBERED_BOX = {
+   [1] = nf.md_numeric_1_box_multiple, --[[ 󰼏 ]]
+   [2] = nf.md_numeric_2_box_multiple, --[[ 󰼐 ]]
+   [3] = nf.md_numeric_3_box_multiple, --[[ 󰼑 ]]
+   [4] = nf.md_numeric_4_box_multiple, --[[ 󰼒 ]]
+   [5] = nf.md_numeric_5_box_multiple, --[[ 󰼓 ]]
+   [6] = nf.md_numeric_6_box_multiple, --[[ 󰼔 ]]
+   [7] = nf.md_numeric_7_box_multiple, --[[ 󰼕 ]]
+   [8] = nf.md_numeric_8_box_multiple, --[[ 󰼖 ]]
+   [9] = nf.md_numeric_9_box_multiple, --[[ 󰼗 ]]
+   [10] = nf.md_numeric_9_plus_box_multiple, --[[ 󰼘 ]]
+}
+
+local GLYPH_UNSEEN_NUMBERED_CIRCLE = {
+   [1] = nf.md_numeric_1_circle, --[[ 󰲠 ]]
+   [2] = nf.md_numeric_2_circle, --[[ 󰲢 ]]
+   [3] = nf.md_numeric_3_circle, --[[ 󰲤 ]]
+   [4] = nf.md_numeric_4_circle, --[[ 󰲦 ]]
+   [5] = nf.md_numeric_5_circle, --[[ 󰲨 ]]
+   [6] = nf.md_numeric_6_circle, --[[ 󰲪 ]]
+   [7] = nf.md_numeric_7_circle, --[[ 󰲬 ]]
+   [8] = nf.md_numeric_8_circle, --[[ 󰲮 ]]
+   [9] = nf.md_numeric_9_circle, --[[ 󰲰 ]]
+   [10] = nf.md_numeric_9_plus_circle, --[[ 󰲲 ]]
+}
+
+local TITLE_INSET = {
+   DEFAULT = 6,
+   ICON = 8,
+}
+
+local RENDER_VARIANTS = {
+   { 'scircle_left', 'title', 'padding', 'scircle_right' },
+   { 'scircle_left', 'title', 'unseen_output', 'padding', 'scircle_right' },
+   { 'scircle_left', 'admin', 'title', 'padding', 'scircle_right' },
+   { 'scircle_left', 'admin', 'title', 'unseen_output', 'padding', 'scircle_right' },
+}
+
+
+---@type table<string, Cells.SegmentColors>
+-- stylua: ignore
+local colors = {
+   text_default          = { bg = '#45475A', fg = '#1C1B19' },
+   text_hover            = { bg = '#5D87A3', fg = '#1C1B19' },
+   text_active           = { bg = '#74c7ec', fg = '#11111B' },
+
+   unseen_output_default = { bg = '#45475A', fg = '#FFA066' },
+   unseen_output_hover   = { bg = '#5D87A3', fg = '#FFA066' },
+   unseen_output_active  = { bg = '#74c7ec', fg = '#FFA066' },
+
+   scircle_default       = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#45475A' },
+   scircle_hover         = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#5D87A3' },
+   scircle_active        = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#74C7EC' },
+}
+
+---
+-- ================
+-- Helper functions
+-- ================
+
+---@param proc string
+local function clean_process_name(proc)
+   local a = string.gsub(proc, '(.*[/\\])(.*)', '%2')
+   return a:gsub('%.exe$', '')
+end
+
+---@param process_name string
+---@param base_title string
+---@param max_width number
+---@param inset number
+local function create_title(process_name, base_title, max_width, inset)
+   local title
+
+   if process_name:len() > 0 then
+      title = process_name .. ' ~ ' .. base_title
+   else
+      title = base_title
+   end
+
+   if base_title == 'Debug' then
+      title = GLYPH_DEBUG .. ' DEBUG'
+      inset = inset - 2
+   end
+
+   if base_title:match('^InputSelector:') ~= nil then
+      title = base_title:gsub('InputSelector:', GLYPH_SEARCH)
+      inset = inset - 2
+   end
+
+   if title:len() > max_width - inset then
+      local diff = title:len() - max_width + inset
+      title = title:sub(1, title:len() - diff)
+   else
+      local padding = max_width - title:len() - inset
+      title = title .. string.rep(' ', padding)
+   end
+
+   return title
+end
+
+---@param panes any[] WezTerm https://wezfurlong.org/wezterm/config/lua/pane/index.html
+local function check_unseen_output(panes)
+   local unseen_output = false
+   local unseen_output_count = 0
+
+   for i = 1, #panes, 1 do
+      if panes[i].has_unseen_output then
+         unseen_output = true
+         if unseen_output_count >= 10 then
+            unseen_output_count = 10
+            break
+         end
+         unseen_output_count = unseen_output_count + 1
+      end
+   end
+
+   return unseen_output, unseen_output_count
+end
+
+---
+-- =================
+-- Tab class and API
+-- =================
+
+---@class Tab
+---@field title string
+---@field cells FormatCells
+---@field title_locked boolean
+---@field locked_title string
+---@field is_admin boolean
+---@field unseen_output boolean
+---@field unseen_output_count number
+---@field is_active boolean
+local Tab = {}
+Tab.__index = Tab
+
+function Tab:new()
+   local tab = {
+      title = '',
+      cells = Cells:new(),
+      title_locked = false,
+      locked_title = '',
+      is_admin = false,
+      unseen_output = false,
+      unseen_output_count = 0,
+   }
+   return setmetatable(tab, self)
+end
+
+---@param event_opts Event.TabTitleOptions
+---@param tab any WezTerm https://wezfurlong.org/wezterm/config/lua/MuxTab/index.html
+---@param max_width number
+function Tab:set_info(event_opts, tab, max_width)
+   local process_name = clean_process_name(tab.active_pane.foreground_process_name)
+
+   self.is_admin = (
+      tab.active_pane.title:match('^Administrator: ') or tab.active_pane.title:match('(Admin)')
+   ) ~= nil
+   self.unseen_output = false
+   self.unseen_output_count = 0
+
+   if not event_opts.hide_active_tab_unseen or not tab.is_active then
+      self.unseen_output, self.unseen_output_count = check_unseen_output(tab.panes)
+   end
+
+   local inset = self.is_admin and TITLE_INSET.ICON or TITLE_INSET.DEFAULT
+   if self.unseen_output then
+      inset = inset + 2
+   end
+
+   if self.title_locked then
+      self.title = create_title('', self.locked_title, max_width, inset)
+      return
+   end
+   self.title = create_title(process_name, tab.active_pane.title, max_width, inset)
+end
+
+function Tab:create_cells()
+   local attr = self.cells.attr
+   self.cells
+      :add_segment('scircle_left', GLYPH_SCIRCLE_LEFT)
+      :add_segment('admin', ' ' .. GLYPH_ADMIN)
+      :add_segment('title', ' ', nil, attr(attr.intensity('Bold')))
+      :add_segment('unseen_output', ' ' .. GLYPH_CIRCLE)
+      :add_segment('padding', ' ')
+      :add_segment('scircle_right', GLYPH_SCIRCLE_RIGHT)
+end
+
+---@param title string
+function Tab:update_and_lock_title(title)
+   self.locked_title = title
+   self.title_locked = true
+end
+
+---@param event_opts Event.TabTitleOptions
+---@param is_active boolean
+---@param hover boolean
+function Tab:update_cells(event_opts, is_active, hover)
+   local tab_state = 'default'
+   if is_active then
+      tab_state = 'active'
+   elseif hover then
+      tab_state = 'hover'
+   end
+
+   self.cells:update_segment_text('title', ' ' .. self.title)
+
+   if event_opts.unseen_icon == 'numbered_box' and self.unseen_output then
+      self.cells:update_segment_text(
+         'unseen_output',
+         ' ' .. GLYPH_UNSEEN_NUMBERED_BOX[self.unseen_output_count]
+      )
+   end
+   if event_opts.unseen_icon == 'numbered_circle' and self.unseen_output then
+      self.cells:update_segment_text(
+         'unseen_output',
+         ' ' .. GLYPH_UNSEEN_NUMBERED_CIRCLE[self.unseen_output_count]
+      )
+   end
+
+   self.cells
+      :update_segment_colors('scircle_left', colors['scircle_' .. tab_state])
+      :update_segment_colors('admin', colors['text_' .. tab_state])
+      :update_segment_colors('title', colors['text_' .. tab_state])
+      :update_segment_colors('unseen_output', colors['unseen_output_' .. tab_state])
+      :update_segment_colors('padding', colors['text_' .. tab_state])
+      :update_segment_colors('scircle_right', colors['scircle_' .. tab_state])
+end
+
+---@return FormatItem[] (ref: https://wezfurlong.org/wezterm/config/lua/wezterm/format.html)
+function Tab:render()
+   local variant_idx = self.is_admin and 3 or 1
+
+   if self.unseen_output then
+      variant_idx = variant_idx + 1
+   end
+   return self.cells:render(RENDER_VARIANTS[variant_idx])
+end
+
+---@type Tab[]
+local tab_list = {}
+
+---@param opts? Event.TabTitleOptions Default: {unseen_icon = 'circle', hide_active_tab_unseen = true}
+M.setup = function(opts)
+   local valid_opts, err = EVENT_OPTS.validator:validate(opts or {})
+
+   if err then
+      wezterm.log_error(err)
+   end
+
+   -- CUSTOM EVENT
+   -- Event listener to manually update the tab name
+   -- Tab name will remain locked until the `reset-tab-title` is triggered
+   wezterm.on('tabs.manual-update-tab-title', function(window, pane)
+      window:perform_action(
+         wezterm.action.PromptInputLine({
+            description = wezterm.format({
+               { Foreground = { Color = '#FFFFFF' } },
+               { Attribute = { Intensity = 'Bold' } },
+               { Text = 'Enter new name for tab' },
+            }),
+            action = wezterm.action_callback(function(_window, _pane, line)
+               if line ~= nil then
+                  local tab = window:active_tab()
+                  local id = tab:tab_id()
+                  tab_list[id]:update_and_lock_title(line)
+               end
+            end),
+         }),
+         pane
+      )
+   end)
+
+   -- CUSTOM EVENT
+   -- Event listener to unlock manually set tab name
+   wezterm.on('tabs.reset-tab-title', function(window, _pane)
+      local tab = window:active_tab()
+      local id = tab:tab_id()
+      tab_list[id].title_locked = false
+   end)
+
+   -- CUSTOM EVENT
+   -- Event listener to manually update the tab name
+   wezterm.on('tabs.toggle-tab-bar', function(window, _pane)
+      local effective_config = window:effective_config()
+      window:set_config_overrides({
+         enable_tab_bar = not effective_config.enable_tab_bar,
+         background = effective_config.background,
+      })
+   end)
+
+   -- BUILTIN EVENT
+   wezterm.on('format-tab-title', function(tab, _tabs, _panes, _config, hover, max_width)
+      if not tab_list[tab.tab_id] then
+         tab_list[tab.tab_id] = Tab:new()
+         tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
+         tab_list[tab.tab_id]:create_cells()
+         return tab_list[tab.tab_id]:render()
+      end
+
+      tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
+      tab_list[tab.tab_id]:update_cells(valid_opts, tab.is_active, hover)
+      return tab_list[tab.tab_id]:render()
+   end)
+end
+
+return M
+
+
+=== /Users/sic/.config/wezterm/utils/backdrops.lua ===
+local wezterm = require('wezterm')
+local colors = require('colors.custom')
+
+-- Seeding random numbers before generating for use
+-- Known issue with lua math library
+-- see: https://stackoverflow.com/questions/20154991/generating-uniform-random-numbers-in-lua
+math.randomseed(os.time())
+math.random()
+math.random()
+math.random()
+
+local GLOB_PATTERN = '*.{jpg,jpeg,png,gif,bmp,ico,tiff,pnm,dds,tga}'
+
+---@class BackDrops
+---@field current_idx number index of current image
+---@field images string[] background images
+---@field images_dir string directory of background images. Default is `wezterm.config_dir .. '/backdrops/'`
+---@field focus_color string background color when in focus mode. Default is `colors.custom.background`
+---@field focus_on boolean focus mode on or off
+local BackDrops = {}
+BackDrops.__index = BackDrops
+
+--- Initialise backdrop controller
+---@private
+function BackDrops:init()
+  local inital = {
+    current_idx = 1,
+    images = {},
+    images_dir = wezterm.config_dir .. '/backdrops/',
+    focus_color = colors.background,
+    focus_on = false,
+  }
+  local backdrops = setmetatable(inital, self)
+  return backdrops
+end
+
+---Override the default `images_dir`
+---Default `images_dir` is `wezterm.config_dir .. '/backdrops/'`
+---
+--- INFO:
+---  This function must be invoked before `set_images()`
+---
+---@param path string directory of background images
+function BackDrops:set_images_dir(path)
+  self.images_dir = path
+  if not path:match('/$') then
+    self.images_dir = path .. '/'
+  end
+  return self
+end
+
+---MUST BE RUN BEFORE ALL OTHER `BackDrops` functions
+---Sets the `images` after instantiating `BackDrops`.
+---
+--- INFO:
+---   During the initial load of the config, this function can only invoked in `wezterm.lua`.
+---   WezTerm's fs utility `glob` (used in this function) works by running on a spawned child process.
+---   This throws a coroutine error if the function is invoked in outside of `wezterm.lua` in the -
+---   initial load of the Terminal config.
+function BackDrops:set_images()
+  self.images = wezterm.glob(self.images_dir .. GLOB_PATTERN)
+  return self
+end
+
+---Override the default `focus_color`
+---Default `focus_color` is `colors.custom.background`
+---@param focus_color string background color when in focus mode
+function BackDrops:set_focus(focus_color)
+  self.focus_color = focus_color
+  return self
+end
+
+---Create the `background` options with the current image
+---@private
+---@return table
+function BackDrops:_create_opts()
+  return {
+    {
+      source = { File = self.images[self.current_idx] },
+      horizontal_align = 'Center',
+    },
+    {
+      source = { Color = colors.background },
+      height = '120%',
+      width = '120%',
+      vertical_offset = '-10%',
+      horizontal_offset = '-10%',
+      opacity = 0.96,
+    },
+  }
+end
+
+---Create the `background` options for focus mode
+---@private
+---@return table
+function BackDrops:_create_focus_opts()
+  return {
+    {
+      source = { Color = self.focus_color },
+      height = '120%',
+      width = '120%',
+      vertical_offset = '-10%',
+      horizontal_offset = '-10%',
+      opacity = 1,
+    },
+  }
+end
+
+---Set the initial options for `background`
+---@param focus_on boolean? focus mode on or off
+function BackDrops:initial_options(focus_on)
+  focus_on = focus_on or false
+  assert(type(focus_on) == 'boolean', 'BackDrops:initial_options - Expected a boolean')
+
+  self.focus_on = focus_on
+  if focus_on then
+    return self:_create_focus_opts()
+  end
+
+  return self:_create_opts()
+end
+
+---Override the current window options for background
+---@private
+---@param window any WezTerm Window see: https://wezfurlong.org/wezterm/config/lua/window/index.html
+---@param background_opts table background option
+function BackDrops:_set_opt(window, background_opts)
+  window:set_config_overrides({
+    background = background_opts,
+    enable_tab_bar = window:effective_config().enable_tab_bar,
+  })
+end
+
+---Override the current window options for background with focus color
+---@private
+---@param window any WezTerm Window see: https://wezfurlong.org/wezterm/config/lua/window/index.html
+function BackDrops:_set_focus_opt(window)
+  local opts = {
+    background = {
+      {
+        source = { Color = self.focus_color },
+        height = '120%',
+        width = '120%',
+        vertical_offset = '-10%',
+        horizontal_offset = '-10%',
+        opacity = 1,
+      },
+    },
+    enable_tab_bar = window:effective_config().enable_tab_bar,
+  }
+  window:set_config_overrides(opts)
+end
+
+---Convert the `files` array to a table of `InputSelector` choices
+---see: https://wezfurlong.org/wezterm/config/lua/keyassignment/InputSelector.html
+function BackDrops:choices()
+  local choices = {}
+  for idx, file in ipairs(self.images) do
+    table.insert(choices, {
+      id = tostring(idx),
+      label = file:match('([^/]+)$'),
+    })
+  end
+  return choices
+end
+
+---Select a random background from the loaded `files`
+---Pass in `Window` object to override the current window options
+---@param window any? WezTerm `Window` see: https://wezfurlong.org/wezterm/config/lua/window/index.html
+function BackDrops:random(window)
+  self.current_idx = math.random(#self.images)
+
+  if window ~= nil then
+    self:_set_opt(window, self:_create_opts())
+  end
+end
+
+---Cycle the loaded `files` and select the next background
+---@param window any WezTerm `Window` see: https://wezfurlong.org/wezterm/config/lua/window/index.html
+function BackDrops:cycle_forward(window)
+  if self.current_idx == #self.images then
+    self.current_idx = 1
+  else
+    self.current_idx = self.current_idx + 1
+  end
+  self:_set_opt(window, self:_create_opts())
+end
+
+---Cycle the loaded `files` and select the previous background
+---@param window any WezTerm `Window` see: https://wezfurlong.org/wezterm/config/lua/window/index.html
+function BackDrops:cycle_back(window)
+  if self.current_idx == 1 then
+    self.current_idx = #self.images
+  else
+    self.current_idx = self.current_idx - 1
+  end
+  self:_set_opt(window, self:_create_opts())
+end
+
+---Set a specific background from the `files` array
+---@param window any WezTerm `Window` see: https://wezfurlong.org/wezterm/config/lua/window/index.html
+---@param idx number index of the `files` array
+function BackDrops:set_img(window, idx)
+  if idx > #self.images or idx < 0 then
+    wezterm.log_error('Index out of range')
+    return
+  end
+
+  self.current_idx = idx
+  self:_set_opt(window, self:_create_opts())
+end
+
+---Toggle the focus mode
+---@param window any WezTerm `Window` see: https://wezfurlong.org/wezterm/config/lua/window/index.html
+function BackDrops:toggle_focus(window)
+  local background_opts
+
+  if self.focus_on then
+    background_opts = self:_create_opts()
+    self.focus_on = false
+  else
+    background_opts = self:_create_focus_opts()
+    self.focus_on = true
+  end
+
+  self:_set_opt(window, background_opts)
+end
+
+return BackDrops:init()
+
+
+=== /Users/sic/.config/wezterm/utils/cells.lua ===
+--
+--[[ FormatItems: Begin ]]
+---@class FormatItem.Text
+---@field Text string
+
+---@class FormatItem.Attribute.Intensity
+---@field Intensity 'Bold'|'Half'|'Normal'
+
+---@class FormatItem.Attribute.Italic
+---@field Italic boolean
+
+---@class FormatItem.Attribute.Underline
+---@field Underline 'None'|'Single'|'Double'|'Curly'
+
+---@class FormatItem.Attribute
+---@field Attribute FormatItem.Attribute.Intensity|FormatItem.Attribute.Italic|FormatItem.Attribute.Underline
+
+---@class FormatItem.Foreground
+---@field Background {Color: string}
+
+---@class FormatItem.Background
+---@field Foreground {Color: string}
+
+---@alias FormatItem.Reset 'ResetAttributes'
+
+---@alias FormatItem FormatItem.Text|FormatItem.Attribute|FormatItem.Foreground|FormatItem.Background|FormatItem.Reset
+--[[ FormatItems: End ]]
+
+local attr = {}
+
+---@param type 'Bold'|'Half'|'Normal'
+---@return {Attribute: FormatItem.Attribute.Intensity}
+attr.intensity = function(type)
+   return { Attribute = { Intensity = type } }
+end
+
+---@return {Attribute: FormatItem.Attribute.Italic}
+attr.italic = function()
+   return { Attribute = { Italic = true } }
+end
+
+---@param type 'None'|'Single'|'Double'|'Curly'
+---@return {Attribute: FormatItem.Attribute.Underline}
+attr.underline = function(type)
+   return { Attribute = { Underline = type } }
+end
+
+---@alias Cells.SegmentColors {bg?: string|'UNSET', fg?: string|'UNSET'}
+
+---@class FormatCells.Segment
+---@field items FormatItem[]
+---@field has_bg boolean
+---@field has_fg boolean
+
+---Format item generator for `wezterm.format` (ref: <https://wezfurlong.org/wezterm/config/lua/wezterm/format.html>)
+---@class FormatCells
+---@field segments table<string|number, FormatCells.Segment>
+local Cells = {}
+Cells.__index = Cells
+
+---Attribute generator for `wezterm.format` (ref: <https://wezfurlong.org/wezterm/config/lua/wezterm/format.html>)
+---@class Cells.Attributes
+---@field intensity fun(type: 'Bold'|'Half'|'Normal'): {Attribute: FormatItem.Attribute.Intensity}
+---@field underline fun(type: 'None'|'Single'|'Double'|'Curly'): {Attribute: FormatItem.Attribute.Underline}
+---@field italic fun(): {Attribute: FormatItem.Attribute.Italic}
+---@overload fun(...: FormatItem.Attribute): FormatItem.Attribute[]
+Cells.attr = setmetatable(attr, {
+   __call = function(_, ...)
+      return { ... }
+   end,
+})
+
+---@return FormatCells
+function Cells:new()
+   return setmetatable({
+      segments = {},
+   }, self)
+end
+
+---Add a new segment with unique `segment_id` to the cells
+---@param segment_id string|number the segment id
+---@param text string the text to push
+---@param color? Cells.SegmentColors the bg and fg colors for text
+---@param attributes? FormatItem.Attribute[] use bold text
+function Cells:add_segment(segment_id, text, color, attributes)
+   color = color or {}
+
+   ---@type FormatItem[]
+   local items = {}
+
+   if color.bg then
+      assert(color.bg ~= 'UNSET', 'Cannot use UNSET when adding new segment')
+      table.insert(items, { Background = { Color = color.bg } })
+   end
+   if color.fg then
+      assert(color.bg ~= 'UNSET', 'Cannot use UNSET when adding new segment')
+      table.insert(items, { Foreground = { Color = color.fg } })
+   end
+   if attributes and #attributes > 0 then
+      for _, attr_ in ipairs(attributes) do
+         table.insert(items, attr_)
+      end
+   end
+   table.insert(items, { Text = text })
+   table.insert(items, 'ResetAttributes')
+
+   ---@type FormatCells.Segment
+   self.segments[segment_id] = {
+      items = items,
+      has_bg = color.bg ~= nil,
+      has_fg = color.fg ~= nil,
+   }
+
+   return self
+end
+
+---Check if the segment exists
+---@private
+---@param segment_id string|number the segment id
+function Cells:_check_segment(segment_id)
+   if not self.segments[segment_id] then
+      error('Segment "' .. segment_id .. '" not found')
+   end
+end
+
+---Update the text of a segment
+---@param segment_id string|number the segment id
+---@param text string the text to push
+function Cells:update_segment_text(segment_id, text)
+   self:_check_segment(segment_id)
+   local idx = #self.segments[segment_id].items - 1
+   self.segments[segment_id].items[idx] = { Text = text }
+   return self
+end
+
+---Update the colors of a segment
+---@param segment_id string|number the segment id
+---@param color Cells.SegmentColors the bg and fg colors for text
+function Cells:update_segment_colors(segment_id, color)
+   assert(type(color) == 'table', 'Color must be a table')
+
+   self:_check_segment(segment_id)
+
+   local has_bg = self.segments[segment_id].has_bg
+   local has_fg = self.segments[segment_id].has_fg
+
+   if color.bg then
+      if has_bg and color.bg == 'UNSET' then
+         table.remove(self.segments[segment_id].items, 1)
+         has_bg = false
+         goto bg_end
+      end
+
+      if has_bg then
+         self.segments[segment_id].items[1] = { Background = { Color = color.bg } }
+      else
+         table.insert(self.segments[segment_id].items, 1, { Background = { Color = color.bg } })
+         has_bg = true
+      end
+   end
+   ::bg_end::
+
+   if color.fg then
+      local fg_idx = has_bg and 2 or 1
+      if has_fg and color.fg == 'UNSET' then
+         table.remove(self.segments[segment_id].items, fg_idx)
+         has_fg = false
+         goto fg_end
+      end
+
+      if has_fg then
+         self.segments[segment_id].items[fg_idx] = { Foreground = { Color = color.fg } }
+      else
+         table.insert(
+            self.segments[segment_id].items,
+            fg_idx,
+            { Foreground = { Color = color.fg } }
+         )
+         has_fg = true
+      end
+   end
+   ::fg_end::
+
+   self.segments[segment_id].has_bg = has_bg
+   self.segments[segment_id].has_fg = has_fg
+   return self
+end
+
+---Convert specific segments into a format that `wezterm.format` can use
+---Segments will rendered in the order of the `ids` table
+---@param ids table<string|number> the segment ids
+---@return FormatItem[]
+function Cells:render(ids)
+   local cells = {}
+
+   for _, id in ipairs(ids) do
+      self:_check_segment(id)
+
+      for _, item in pairs(self.segments[id].items) do
+         table.insert(cells, item)
+      end
+   end
+   return cells
+end
+
+---Convert all segments into a format that `wezterm.format` can use
+--- WARNING: Segments may not be in the same order as they were added if the `segment_id` is a string
+---
+---@return FormatItem[]
+function Cells:render_all()
+   local cells = {}
+   for _, segment in pairs(self.segments) do
+      for _, item in pairs(segment.items) do
+         table.insert(cells, item)
+      end
+   end
+   return cells
+end
+
+---Reset all segments
+function Cells:reset()
+   self.segments = {}
+end
+
+return Cells
+
+
+=== /Users/sic/.config/wezterm/utils/gpu-adapter.lua ===
+local wezterm = require('wezterm')
+local platform = require('utils.platform')
+
+---@alias WeztermGPUBackend 'Vulkan'|'Metal'|'Gl'|'Dx12'
+---@alias WeztermGPUDeviceType 'DiscreteGpu'|'IntegratedGpu'|'Cpu'|'Other'
+
+---@class WeztermGPUAdapter
+---@field name string
+---@field backend WeztermGPUBackend
+---@field device number
+---@field device_type WeztermGPUDeviceType
+---@field driver? string
+---@field driver_info? string
+---@field vendor string
+
+---@alias AdapterMap { [WeztermGPUBackend]: WeztermGPUAdapter|nil }|nil
+
+---@class GpuAdapters
+---@field __backends WeztermGPUBackend[]
+---@field __preferred_backend WeztermGPUBackend
+---@field DiscreteGpu AdapterMap
+---@field IntegratedGpu AdapterMap
+---@field Cpu AdapterMap
+---@field Other AdapterMap
+local GpuAdapters = {}
+GpuAdapters.__index = GpuAdapters
+
+---See `https://github.com/gfx-rs/wgpu#supported-platforms` for more info on available backends
+GpuAdapters.AVAILABLE_BACKENDS = {
+  mac = { 'Metal' },
+}
+
+---@type WeztermGPUAdapter[]
+GpuAdapters.ENUMERATED_GPUS = wezterm.gui.enumerate_gpus()
+
+---@return GpuAdapters
+---@private
+function GpuAdapters:init()
+  local initial = {
+    __backends = self.AVAILABLE_BACKENDS[platform.os],
+    __preferred_backend = self.AVAILABLE_BACKENDS[platform.os][1],
+    DiscreteGpu = nil,
+    IntegratedGpu = nil,
+    Cpu = nil,
+    Other = nil,
+  }
+
+  -- iterate over the enumerated GPUs and create a lookup table (`AdapterMap`)
+  for _, adapter in ipairs(self.ENUMERATED_GPUS) do
+    if not initial[adapter.device_type] then
+      initial[adapter.device_type] = {}
+    end
+    initial[adapter.device_type][adapter.backend] = adapter
+  end
+
+  local gpu_adapters = setmetatable(initial, self)
+
+  return gpu_adapters
+end
+
+---Will pick the best adapter based on the following criteria:
+---   1. Best GPU available (Discrete > Integrated > Other (for wgpu's OpenGl implementation on Discrete GPU) > Cpu)
+---   2. Best graphics API available (based off my very scientific scroll a big log file in neovim test 😁)
+---
+---Graphics API choices are based on the platform:
+---   - Mac: Metal
+---@see GpuAdapters.AVAILABLE_BACKENDS
+---
+---If the best adapter combo is not found, it will return `nil` and lets Wezterm decide the best adapter.
+---
+---Please note these are my own personal preferences and may not be the best for your system.
+---If you want to manually choose the adapter, use `GpuAdapters:pick_manual(backend, device_type)`
+---Or feel free to re-arrange `GpuAdapters.AVAILABLE_BACKENDS` to you liking
+---@return WeztermGPUAdapter|nil
+function GpuAdapters:pick_best()
+  local adapters_options = self.DiscreteGpu
+  local preferred_backend = self.__preferred_backend
+
+  if not adapters_options then
+    adapters_options = self.IntegratedGpu
+  end
+
+  if not adapters_options then
+    adapters_options = self.Other
+    preferred_backend = 'Gl'
+  end
+
+  if not adapters_options then
+    adapters_options = self.Cpu
+  end
+
+  if not adapters_options then
+    wezterm.log_error('No GPU adapters found. Using Default Adapter.')
+    return nil
+  end
+
+  local adapter_choice = adapters_options[preferred_backend]
+
+  if not adapter_choice then
+    wezterm.log_error('Preferred backend not available. Using Default Adapter.')
+    return nil
+  end
+
+  return adapter_choice
+end
+
+---Manually pick the adapter based on the backend and device type.
+---If the adapter is not found, it will return nil and lets Wezterm decide the best adapter.
+---@param backend WeztermGPUBackend
+---@param device_type WeztermGPUDeviceType
+---@return WeztermGPUAdapter|nil
+function GpuAdapters:pick_manual(backend, device_type)
+  local adapters_options = self[device_type]
+
+  if not adapters_options then
+    wezterm.log_error('No GPU adapters found. Using Default Adapter.')
+    return nil
+  end
+
+  local adapter_choice = adapters_options[backend]
+
+  if not adapter_choice then
+    wezterm.log_error('Preferred backend not available. Using Default Adapter.')
+    return nil
+  end
+
+  return adapter_choice
+end
+
+return GpuAdapters:init()
+
+
+=== /Users/sic/.config/wezterm/utils/math.lua ===
+local M = {}
+
+M.clamp = function(x, min, max)
+  return x < min and min or (x > max and max or x)
+end
+
+M.round = function(x, increment)
+  if increment then
+    return M.round(x / increment) * increment
+  end
+  return x >= 0 and math.floor(x + 0.5) or math.ceil(x - 0.5)
+end
+
+return M
+
+
+=== /Users/sic/.config/wezterm/utils/opts-validator.lua ===
+---@class Opt.boolean
+---@field name string
+---@field type 'boolean'
+---@field default boolean
+---@field required? boolean
+
+---@class Opt.number
+---@field name string
+---@field type 'number'
+---@field default number
+---@field required? boolean
+---@field enum? number[]
+
+---@class Opt.string
+---@field name string
+---@field type 'string'
+---@field default string
+---@field required? boolean
+---@field enum? string[]
+
+---@class Opt.table
+---@field name string
+---@field type 'table'
+---@field table_of 'string' | 'number' | 'boolean'
+---@field default table
+---@field required? boolean
+
+---@alias OptsSchema (Opt.boolean | Opt.number | Opt.string | Opt.table)[]
+
+---Check if a table contains a value
+---@param tbl table
+---@param value any
+---@return boolean
+local function tbl_contains(tbl, value)
+   for _, v in ipairs(tbl) do
+      if v == value then
+         return true
+      end
+   end
+   return false
+end
+
+---Validate the schema for the event options
+---@param schema OptsSchema
+local function validate_opts_schema(schema)
+   local field_names = {}
+
+   for _, opt in ipairs(schema) do
+      assert(type(opt.name) == 'string', 'name must be a string')
+      assert(not tbl_contains(field_names, opt.name), 'name must be unique')
+      assert(
+         type(opt.required) == 'boolean' or type(opt.required) == 'nil',
+         'required must be a boolean'
+      )
+      assert(
+         opt.type == 'boolean'
+            or opt.type == 'number'
+            or opt.type == 'string'
+            or opt.type == 'table',
+         'type must be one of boolean, number, string, table'
+      )
+      assert(type(opt.type) == 'string', 'type must be a string')
+      assert(type(opt.default) == opt.type, 'default must be a ' .. opt.type)
+
+      if opt.type == 'table' then
+         assert(type(opt.table_of) == 'string', 'table_of must be a string')
+         assert(
+            opt.table_of == 'string' or opt.table_of == 'number' or opt.table_of == 'boolean',
+            'table_of must be one of string, number, boolean'
+         )
+         for _, v in ipairs(opt.default) do
+            assert(type(v) == opt.table_of, 'table values must be ' .. opt.table_of)
+         end
+      end
+
+      if opt.enum then
+         assert(type(opt.enum) == 'table', 'enum must be a table')
+         for _, v in ipairs(opt.enum) do
+            assert(type(v) == opt.type, 'enum values must be ' .. opt.type)
+         end
+      end
+   end
+end
+
+---Event options validation class
+---@class OptsValidator
+---@field schema OptsSchema
+local OptsValidator = {}
+OptsValidator.__index = OptsValidator
+
+---Create a new instance of OptsValidator
+---@param schema OptsSchema
+function OptsValidator:new(schema)
+   validate_opts_schema(schema)
+   local event_opts = { schema = schema }
+   return setmetatable(event_opts, self)
+end
+
+---Validate the event options against the schema
+---If the options are valid, it returns the options and nil
+---If a field is invalid, it returns the default value and an error message
+---@generic T
+---@param opts T
+---@return T
+---@return string|nil
+function OptsValidator:validate(opts)
+   local errors = {}
+   local valid_opts = {}
+
+   for _, opt in ipairs(self.schema) do
+      local value = opts[opt.name]
+      local error = false
+
+      if value == nil then
+         if opt.required then
+            table.insert(errors, string.format('Field "%s" is required', opt.name))
+            error = true
+         end
+      end
+
+      if value == nil then
+         valid_opts[opt.name] = opt.default
+         goto continue
+      end
+
+      if type(value) ~= opt.type then
+         table.insert(errors, string.format('Field "%s" must of type "%s"', opt.name, opt.type))
+         error = true
+      end
+
+      if
+         (opt.type == 'string' or opt.type == 'number')
+         and opt.enum ~= nil
+         and not tbl_contains(opt.enum, value)
+      then
+         table.insert(
+            errors,
+            string.format('Field "%s" must be one of [%s]', opt.name, table.concat(opt.enum, ', '))
+         )
+         error = true
+      end
+
+      if opt.type == 'table' then
+         for _, v in ipairs(value) do
+            if type(v) ~= opt.table_of then
+               table.insert(
+                  errors,
+                  string.format('Items in field "%s" must be of type "%s"', opt.name, opt.table_of)
+               )
+               error = true
+               goto inner_continue
+            end
+         end
+         ::inner_continue::
+      end
+
+      if error then
+         valid_opts[opt.name] = opt.default
+         goto continue
+      end
+
+      valid_opts[opt.name] = value
+      ::continue::
+   end
+
+   if #errors > 0 then
+      local err_msg = '\n~~EventOpts ERRORS~~\n'
+      for _, err in ipairs(errors) do
+         err_msg = err_msg .. '- ' .. err .. '\n'
+      end
+      return valid_opts, err_msg
+   end
+
+   return valid_opts, nil
+end
+
+return OptsValidator
+
+
+=== /Users/sic/.config/wezterm/utils/platform.lua ===
+---@alias PlatformType 'mac'
+
+---@return {os: PlatformType, is_mac: boolean}
+return {
+  os = 'mac',
+  is_mac = true,
+}
+
+
+=== /Users/sic/.config/wezterm/wezterm.lua ===
+local Config = require('config')
+
+require('utils.backdrops')
+-- :set_focus('#000000')
+-- :set_images_dir(require('wezterm').home_dir .. '/Pictures/Wallpapers/')
+    :set_images()
+    :random()
+
+require('events.left-status').setup()
+require('events.right-status').setup({ date_format = '%a %H:%M:%S' })
+require('events.tab-title').setup({ hide_active_tab_unseen = false, unseen_icon = 'numbered_box' })
+require('events.new-tab-button').setup()
+require('events.gui-startup').setup()
+
+return Config:init()
+    :append(require('config.appearance'))
+    :append(require('config.bindings'))
+    :append(require('config.domains'))
+    :append(require('config.fonts'))
+    :append(require('config.general'))
+    :append(require('config.launch')).options
+

@@ -1,0 +1,65 @@
+export LANG="en_US.UTF-8"
+
+# ------------------------------------------------------------------------------
+# 🧠 XDG Base Dirs
+# ------------------------------------------------------------------------------
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# ------------------------------------------------------------------------------
+# 🛠 Toolchain Paths (order matters)
+# ------------------------------------------------------------------------------
+path=(
+  /Applications/Postgres.app/Contents/MacOS/bin
+  /Applications/Postgres.app/Contents/Versions/latest/bin
+  /usr/local/opt/llvm/bin
+  /usr/local/opt/rustup/bin
+  /opt/X11/bin
+  /opt/metasploit-framework/bin
+  $HOME/go/bin
+  $HOME/.cargo/bin
+  $HOME/.sketchybar/bin
+  $HOME/bin
+  $path
+)
+export PATH
+
+# ------------------------------------------------------------------------------
+# 🍺 Homebrew (Apple Silicon)
+# ------------------------------------------------------------------------------
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# ------------------------------------------------------------------------------
+# 🦀 Rust / Cargo
+# ------------------------------------------------------------------------------
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
+# ------------------------------------------------------------------------------
+# 🐍 Python / pyenv (PATH ONLY — full init in .zshrc)
+# ------------------------------------------------------------------------------
+if command -v pyenv &>/dev/null; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PIPENV_VENV_IN_PROJECT=1
+  export PATH="$PYENV_ROOT/shims:$PATH"
+  eval "$(pyenv init --path)"
+fi
+
+# ------------------------------------------------------------------------------
+# 🧑‍💻 SSH-specific editor
+# ------------------------------------------------------------------------------
+[[ -n "$SSH_CONNECTION" ]] && export EDITOR="code"
+
+# ------------------------------------------------------------------------------
+# 📚 Man & Info paths
+# ------------------------------------------------------------------------------
+export MANPATH="/usr/local/share/man:${MANPATH:-}"
+export INFOPATH="/usr/local/share/info:${INFOPATH:-}"
+
+# ------------------------------------------------------------------------------
+# 🧹 Clean state
+# ------------------------------------------------------------------------------
+unset RBENV_VERSION
+
+# Added by `rbenv init` on Sun Feb  1 21:44:24 EST 2026
+eval "$(rbenv init - --no-rehash zsh)"

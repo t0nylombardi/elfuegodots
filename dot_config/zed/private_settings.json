@@ -1,0 +1,62 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "icon_theme": "Zed (Default)",
+  "ui_font_size": 18,
+  "buffer_font_size": 18,
+  "buffer_font_family": "MesloLGS Nerd Font Mono",
+  "buffer_font_features": {
+    "calt": true,
+    "liga": true,
+  },
+  "buffer_line_height": {
+    "custom": 1.8,
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Catppuccin Macchiato - No Italics",
+  },
+  "inlay_hints": {
+    "enabled": false,
+  },
+  "project_panel": {
+    "dock": "left",
+    "sticky_scroll": false,
+    "auto_fold_dirs": false,
+    "indent_guides": {
+      "show": "never",
+    },
+    "indent_size": 15,
+    "button": false,
+  },
+  "format_on_save": "on",
+  "journal": {
+    "path": "~",
+    "hour_format": "hour12",
+  },
+  "terminal": {
+    "copy_on_select": true,
+    "dock": "bottom",
+    "button": false,
+    "default_width": 200,
+    "line_height": {
+      "custom": 1.0,
+    },
+  },
+  "notification_panel": {
+    "button": false,
+  },
+  "languages": {
+    "Ruby": {},
+  },
+}

@@ -1,0 +1,5 @@
+.config/gcloud/**
+.config/yarn/**
+.config/configstore/**
+.config/chezmoi/**
+.config/**/logs/**
