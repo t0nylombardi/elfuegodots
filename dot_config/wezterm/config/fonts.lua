@@ -3,7 +3,7 @@ local platform = require('utils.platform')
 
 local font_family = 'MesloLGS Nerd Font Mono'
 
-local font_size = 18
+local font_size = 14
 
 return {
   font = wezterm.font({

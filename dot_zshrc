@@ -9,7 +9,6 @@ plugins=(
   git
   aliases
   bundler
-  chezmoi
   chucknorris
   common-aliases
   rails
@@ -38,6 +37,10 @@ fi
 if command -v fzf &>/dev/null; then
   source <(fzf --zsh)
 fi
+
+# ==========================================================
+# DEV TOOLS
+# ==========================================================
 
 # 🐢 Lazy-load NVM (huge startup win)
 export NVM_DIR="$HOME/.nvm"
@@ -91,14 +94,18 @@ if [[ -d "$DOTFILES_DIR" ]]; then
 fi
 
 command -v jj &>/dev/null && source <(jj util completion zsh)
-# command -v openclaw &>/dev/null && source <(openclaw completion --shell zsh)
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-check_chezmoi() {
-  if ! chezmoi diff --quiet 2>/dev/null; then
-    echo "⚠️  Chezmoi drift detected."
-  fi
-}
-precmd_functions+=(check_chezmoi)
+# pnpm
+export PNPM_HOME="/Users/sic/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

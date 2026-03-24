@@ -1,13 +1,9 @@
 export LANG="en_US.UTF-8"
-
-# ------------------------------------------------------------------------------
-# 🧠 XDG Base Dirs
-# ------------------------------------------------------------------------------
 export XDG_CONFIG_HOME="$HOME/.config"
+export HOMEBREW_AUTO_UPDATE_SECS="804800"
 
-# ------------------------------------------------------------------------------
-# 🛠 Toolchain Paths (order matters)
-# ------------------------------------------------------------------------------
+# Toolchain Paths
+
 path=(
   /Applications/Postgres.app/Contents/MacOS/bin
   /Applications/Postgres.app/Contents/Versions/latest/bin
@@ -15,6 +11,7 @@ path=(
   /usr/local/opt/rustup/bin
   /opt/X11/bin
   /opt/metasploit-framework/bin
+  $HOME/.atuin/bin/env
   $HOME/go/bin
   $HOME/.cargo/bin
   $HOME/.sketchybar/bin
@@ -23,21 +20,12 @@ path=(
 )
 export PATH
 
-# ------------------------------------------------------------------------------
-# 🍺 Homebrew (Apple Silicon)
-# ------------------------------------------------------------------------------
 if [[ -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-
-# ------------------------------------------------------------------------------
-# 🦀 Rust / Cargo
 # ------------------------------------------------------------------------------
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-# ------------------------------------------------------------------------------
-# 🐍 Python / pyenv (PATH ONLY — full init in .zshrc)
-# ------------------------------------------------------------------------------
 if command -v pyenv &>/dev/null; then
   export PYENV_ROOT="$HOME/.pyenv"
   export PIPENV_VENV_IN_PROJECT=1
@@ -45,14 +33,9 @@ if command -v pyenv &>/dev/null; then
   eval "$(pyenv init --path)"
 fi
 
-# ------------------------------------------------------------------------------
-# 🧑‍💻 SSH-specific editor
-# ------------------------------------------------------------------------------
 [[ -n "$SSH_CONNECTION" ]] && export EDITOR="code"
 
-# ------------------------------------------------------------------------------
-# 📚 Man & Info paths
-# ------------------------------------------------------------------------------
+
 export MANPATH="/usr/local/share/man:${MANPATH:-}"
 export INFOPATH="/usr/local/share/info:${INFOPATH:-}"
 
