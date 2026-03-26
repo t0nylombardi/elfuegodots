@@ -19,7 +19,7 @@ return {
   cursor_blink_ease_in = 'EaseOut',
   cursor_blink_ease_out = 'EaseOut',
   default_cursor_style = 'BlinkingBlock',
-  cursor_blink_rate = 650,
+  cursor_blink_rate = 350,
 
   -- color scheme
   colors = colors,
@@ -32,9 +32,9 @@ return {
 
   -- tab bar
   enable_tab_bar = true,
-  hide_tab_bar_if_only_one_tab = false,
+  hide_tab_bar_if_only_one_tab = true,
   use_fancy_tab_bar = false,
-  tab_max_width = 20,
+  tab_max_width = 15,
   show_tab_index_in_tab_bar = true,
   switch_to_last_active_tab_when_closing_tab = true,
 
@@ -45,6 +45,8 @@ return {
   command_palette_rows = 25,
 
   -- window
+  -- keep resize borders but remove the native title bar
+  window_decorations = 'RESIZE',
   window_padding = {
     left = 4,
     right = 4,
