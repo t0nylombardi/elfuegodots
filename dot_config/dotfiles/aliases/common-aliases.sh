@@ -25,9 +25,11 @@ alias .....='cd ../../../..'
 
 alias \?='pwd'
 
+alias c\.='codium'
+
 cde() {
   if [[ -n "$1" ]]; then
     z "$@" || return 1
   fi
-  code .
+  codium .
 }
