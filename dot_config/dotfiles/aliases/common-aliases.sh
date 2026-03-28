@@ -25,7 +25,7 @@ alias .....='cd ../../../..'
 
 alias \?='pwd'
 
-alias c\.='codium'
+alias c='codium'
 
 cde() {
   if [[ -n "$1" ]]; then

@@ -19,6 +19,10 @@ rtest() {
   CI=true bundle exec rspec
 }
 
+rspect() {
+  CI=true bundle exec rspec
+}
+
 nuke_gems() {
   # Step 1: Uninstall all gems (in parallel)
   echo "Uninstalling all gems..."
