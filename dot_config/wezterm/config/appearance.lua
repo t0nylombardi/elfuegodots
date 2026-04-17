@@ -48,9 +48,9 @@ return {
   -- keep resize borders but remove the native title bar
   window_decorations = 'RESIZE',
   window_padding = {
-    left = 4,
-    right = 4,
-    top = 10,
+    left = 6,
+    right = 6,
+    top = 20,
     bottom = 7.5,
   },
   adjust_window_size_when_changing_font_size = false,

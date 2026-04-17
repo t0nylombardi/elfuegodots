@@ -46,3 +46,8 @@ unset RBENV_VERSION
 
 # Added by `rbenv init` on Sun Feb  1 21:44:24 EST 2026
 eval "$(rbenv init - --no-rehash zsh)"
+
+
+export BOOTDEV_ACCESS_TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyVVVJRCI6IjEyZDlkNDUzLTE0N2MtNGE4My04OWYwLWU2MzU1MzY1MTUwZCIsImlzcyI6ImJvb3QuZGV2IiwiZXhwIjoxNzcyNzU5ODE4LCJpYXQiOjE3NzI3NTYyMTh9.Hx5ELIuBH31jbskIbo9kKUiDGJtrUf39lPvq3mX78xQ'
+
+export BOOTDEV_REFRESH_TOKEN='ywhBoiWG1Yx-7ubPqFGl3BTol8AkhNvo'
