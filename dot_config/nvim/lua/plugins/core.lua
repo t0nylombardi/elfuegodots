@@ -58,8 +58,9 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    config = function()
-      local filetypes = {
+    build = ':TSUpdate',
+    opts = {
+      ensure_installed = {
         'lua',
         'vim',
         'vimdoc',
@@ -77,10 +78,15 @@ return {
         'bash',
         'yaml',
         'markdown',
-      }
-      require('nvim-treesitter').install(filetypes)
+      },
+      auto_install = false,
+      highlight = { enable = true },
+      indent = { enable = true },
+    },
+    config = function(_, opts)
+      require('nvim-treesitter.configs').setup(opts)
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = filetypes,
+        pattern = opts.ensure_installed,
         callback = function() vim.treesitter.start() end,
       })
     end,
