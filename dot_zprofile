@@ -1,6 +1,13 @@
 export LANG="en_US.UTF-8"
 export XDG_CONFIG_HOME="$HOME/.config"
 export HOMEBREW_AUTO_UPDATE_SECS="804800"
+export CFLAGS="-I/opt/homebrew/include"
+export LDFLAGS="-L/opt/homebrew/lib"
+export CPPFLAGS="-I/opt/homebrew/include"
+export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig"
+export VISUAL="codium --wait"
+export EDITOR="codium --wait"
+
 
 # Toolchain Paths
 
@@ -24,8 +31,7 @@ if [[ -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 # ------------------------------------------------------------------------------
-[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-
+[[ -f "$HOME/.cargo/env" ]] &&
 if command -v pyenv &>/dev/null; then
   export PYENV_ROOT="$HOME/.pyenv"
   export PIPENV_VENV_IN_PROJECT=1
@@ -33,7 +39,7 @@ if command -v pyenv &>/dev/null; then
   eval "$(pyenv init --path)"
 fi
 
-[[ -n "$SSH_CONNECTION" ]] && export EDITOR="code"
+[[ -n "$SSH_CONNECTION" ]] && export EDITOR="codium"
 
 
 export MANPATH="/usr/local/share/man:${MANPATH:-}"
@@ -51,3 +57,10 @@ eval "$(rbenv init - --no-rehash zsh)"
 export BOOTDEV_ACCESS_TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyVVVJRCI6IjEyZDlkNDUzLTE0N2MtNGE4My04OWYwLWU2MzU1MzY1MTUwZCIsImlzcyI6ImJvb3QuZGV2IiwiZXhwIjoxNzcyNzU5ODE4LCJpYXQiOjE3NzI3NTYyMTh9.Hx5ELIuBH31jbskIbo9kKUiDGJtrUf39lPvq3mX78xQ'
 
 export BOOTDEV_REFRESH_TOKEN='ywhBoiWG1Yx-7ubPqFGl3BTol8AkhNvo'
+
+# bun completions
+[ -s "/Users/t0nylombardi/.bun/_bun" ] && source "/Users/t0nylombardi/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

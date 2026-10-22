@@ -6,13 +6,10 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="" # Disabled — using oh-my-posh
 
 plugins=(
-  git
   aliases
   bundler
-  chucknorris
   common-aliases
   rails
-  github
   uv
   zsh-autosuggestions
   zsh-syntax-highlighting
@@ -59,12 +56,6 @@ node() { _nvm_lazy_load; node "$@"; }
 npm()  { _nvm_lazy_load; npm "$@"; }
 npx()  { _nvm_lazy_load; npx "$@"; }
 
-export CFLAGS="-I/opt/homebrew/include"
-export LDFLAGS="-L/opt/homebrew/lib"
-export CPPFLAGS="-I/opt/homebrew/include"
-export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig"
-export VISUAL="codium --wait"
-export EDITOR="codium --wait"
 
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@3 \
   --with-readline-dir=/opt/homebrew/opt/readline \
@@ -107,3 +98,4 @@ esac
 
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
+eval "$(mise activate zsh)"
