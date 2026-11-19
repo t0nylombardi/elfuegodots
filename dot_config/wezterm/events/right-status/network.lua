@@ -39,6 +39,10 @@ end
 
 ---@return EthernetStatus?
 local function get()
+  if not wezterm.target_triple:find('apple%-darwin') then
+    return nil
+  end
+
   for _, device in ipairs(ethernet_devices()) do
     local ok, out = wezterm.run_child_process({
       NETWORKSETUP,

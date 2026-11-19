@@ -143,7 +143,7 @@ switch_to() {
 }
 
 has_session() {
-    tmux list-sessions | grep -q "^$1:"
+    tmux has-session -t "=$1" 2>/dev/null
 }
 
 hydrate() {
@@ -326,19 +326,15 @@ if [[ -z $selected ]]; then
 fi
 
 if [[ "$selected" =~ ^\[TMUX\]\ (.+)$ ]]; then
-    selected="${BASH_REMATCH[1]}"
+    switch_to "=${BASH_REMATCH[1]}"
+    exit $?
 fi
 
 selected_name=$(basename "$selected" | tr . _)
 
-if ! is_tmux_running; then
-    tmux new-session -ds "$selected_name" -c "$selected"
-    hydrate "$selected_name" "$selected"
-fi
-
 if ! has_session "$selected_name"; then
-    tmux new-session -ds "$selected_name" -c "$selected"
+    tmux new-session -ds "$selected_name" -c "$selected" || exit 1
     hydrate "$selected_name" "$selected"
 fi
 
-switch_to "$selected_name"
+switch_to "=$selected_name"
