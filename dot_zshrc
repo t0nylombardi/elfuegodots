@@ -1,8 +1,8 @@
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+typeset -U path
+path=("$HOME/bin" "$HOME/.local/bin" /usr/local/bin "$path[@]")
 
-export LANG="en_US.UTF-8"
-
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
 ZSH_THEME="" # Disabled — using oh-my-posh
 
 plugins=(
@@ -11,55 +11,80 @@ plugins=(
   common-aliases
   rails
   uv
-  zsh-autosuggestions
-  zsh-syntax-highlighting
 )
 
-source "$ZSH/oh-my-zsh.sh"
+zsh_plugin_dir="${ZSH_CUSTOM:-$ZSH/custom}/plugins"
+for zsh_plugin in zsh-autosuggestions zsh-syntax-highlighting; do
+  if [[ -r "$zsh_plugin_dir/$zsh_plugin/$zsh_plugin.plugin.zsh" ||
+        -r "$ZSH/plugins/$zsh_plugin/$zsh_plugin.plugin.zsh" ]]; then
+    plugins+=("$zsh_plugin")
+  fi
+done
+unset zsh_plugin_dir zsh_plugin
 
-if command -v oh-my-posh &>/dev/null; then
-  eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/catppuccin.omp.json)"
+zsh_highlight_theme="$XDG_CONFIG_HOME/zsh-syntax-highlighting/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh"
+[[ -r "$zsh_highlight_theme" ]] && source "$zsh_highlight_theme"
+unset zsh_highlight_theme
+
+if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
+  source "$ZSH/oh-my-zsh.sh"
+else
+  autoload -Uz compinit
+  compinit
 fi
 
-ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR="/opt/homebrew/share/zsh-syntax-highlighting/highlighters"
-source ~/.config/zsh-syntax-highlighting/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh
-
-# Oh My Zsh initializes completion above.
+if command -v oh-my-posh &>/dev/null &&
+   [[ -r "$XDG_CONFIG_HOME/ohmyposh/catppuccin.omp.json" ]]; then
+  eval "$(oh-my-posh init zsh --config "$XDG_CONFIG_HOME/ohmyposh/catppuccin.omp.json")"
+fi
 
 if command -v zoxide &>/dev/null; then
   eval "$(zoxide init zsh)"
 fi
 
 if command -v fzf &>/dev/null; then
-  source <(fzf --zsh)
+  if fzf_init=$(fzf --zsh 2>/dev/null); then
+    eval "$fzf_init"
+  else
+    for fzf_script in completion key-bindings; do
+      fzf_script="/usr/share/doc/fzf/examples/$fzf_script.zsh"
+      [[ -r "$fzf_script" ]] && source "$fzf_script"
+    done
+    unset fzf_script
+  fi
+  unset fzf_init
 fi
 
 # ==========================================================
 # DEV TOOLS
 # ==========================================================
 
-# Lazy-load NVM (huge startup win)
-export NVM_DIR="$HOME/.nvm"
+# Lazy-load NVM when installed.
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
-if [[ -f "$HOME/.nvm/alias/default" ]]; then
-  NODE_DEFAULT=$(<"$HOME/.nvm/alias/default")
-  export PATH="$HOME/.nvm/versions/node/${NODE_DEFAULT}/bin:$PATH"
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  if [[ -r "$NVM_DIR/alias/default" ]]; then
+    node_default=$(<"$NVM_DIR/alias/default")
+    if [[ -d "$NVM_DIR/versions/node/$node_default/bin" ]]; then
+      path=("$NVM_DIR/versions/node/$node_default/bin" "$path[@]")
+    fi
+    unset node_default
+  fi
+
+  _nvm_lazy_load() {
+    unset -f node npm npx
+    source "$NVM_DIR/nvm.sh"
+    [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+  }
+
+  node() { _nvm_lazy_load; node "$@"; }
+  npm()  { _nvm_lazy_load; npm "$@"; }
+  npx()  { _nvm_lazy_load; npx "$@"; }
 fi
 
-_nvm_lazy_load() {
-  unset -f node npm npx
-  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
-}
-
-node() { _nvm_lazy_load; node "$@"; }
-npm()  { _nvm_lazy_load; npm "$@"; }
-npx()  { _nvm_lazy_load; npx "$@"; }
-
-
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@3 \
-  --with-readline-dir=/opt/homebrew/opt/readline \
-  --enable-shared"
+export BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
+path=("$BUN_INSTALL/bin" "$path[@]")
+[[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
@@ -72,30 +97,47 @@ setopt sharehistory
 
 HIST_STAMPS="mm/dd/yyyy"
 
-DOTFILES_DIR="$HOME/.config/dotfiles"
+DOTFILES_DIR="$XDG_CONFIG_HOME/dotfiles"
 
 if [[ -d "$DOTFILES_DIR" ]]; then
   while IFS= read -r file; do
     case "$file" in
       */brew|*/install_symlinks.sh|*/setup.sh) continue ;;
+      */minescraft.sh) [[ $OSTYPE == darwin* ]] || continue ;;
     esac
     source "$file"
-  done < <(find "$DOTFILES_DIR" -type f \( -name "*.zsh" -o -name "*.sh" \))
+  done < <(command find "$DOTFILES_DIR" -type f \( -name "*.zsh" -o -name "*.sh" \))
 fi
 
 command -v jj &>/dev/null && source <(jj util completion zsh)
 
 # Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+[ -s "$XDG_CONFIG_HOME/envman/load.sh" ] && source "$XDG_CONFIG_HOME/envman/load.sh"
 
-# pnpm
-export PNPM_HOME="/Users/sic/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+if [[ $OSTYPE == darwin* ]]; then
+  export PNPM_HOME="${PNPM_HOME:-$HOME/Library/pnpm}"
+else
+  export PNPM_HOME="${PNPM_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/pnpm}"
+fi
+path=("$PNPM_HOME" "$path[@]")
 
-. "$HOME/.atuin/bin/env"
-eval "$(atuin init zsh)"
-eval "$(mise activate zsh)"
+[[ -r "$HOME/.atuin/bin/env" ]] && source "$HOME/.atuin/bin/env"
+if command -v atuin &>/dev/null; then
+  eval "$(atuin init zsh)"
+fi
+if command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+fi
+
+# Load packaged highlighting after the other integrations register their widgets.
+if (( ! $+functions[_zsh_highlight] )); then
+  for zsh_highlight_script in \
+    "${HOMEBREW_PREFIX:-/usr/local}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+    /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; do
+    if [[ -r "$zsh_highlight_script" ]]; then
+      source "$zsh_highlight_script"
+      break
+    fi
+  done
+  unset zsh_highlight_script
+fi
