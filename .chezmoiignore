@@ -3,8 +3,34 @@
 .config/configstore/**
 .config/chezmoi/**
 .config/**/logs/**
+Brewfile
+README.md
 bootstrap
 bootstrap/**
+
+# Local authentication and installation state
+.config/gh/hosts.yml
+.config/bootdev
+.config/bootdev/**
+.config/ngrok
+.config/ngrok/**
+.config/atuin/atuin-receipt.json
+
+# Nested repository metadata and generated application state
+.config/**/.git
+.config/**/.git/**
+.config/**/.DS_Store
+.config/**/code_output.txt
+.config/QtProject
+.config/QtProject/**
+.config/lite-xl/font_cache.lua
+.config/lite-xl/session.lua
+.config/lite-xl/user_settings.lua
+.config/lite-xl/ws
+.config/lite-xl/ws/**
+.config/zed/prompts
+.config/zed/prompts/**
+
 {{ if ne .chezmoi.os "darwin" }}
 .config/zsh
 {{ end }}

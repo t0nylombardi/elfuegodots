@@ -1,6 +1,6 @@
-# EL FUEGO DOTS(dotfiles)
+# EL FUEGO DOTS
 
-Ddotfiles managed with [chezmoi](https://www.chezmoi.io/).
+Dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 This repo configures shell, terminal, editor, tmux, and package bootstrap tooling with a Catppuccin-leaning setup and a few custom workflow helpers.
 
@@ -25,22 +25,36 @@ This repo configures shell, terminal, editor, tmux, and package bootstrap toolin
 
 ## Bootstrap on a new machine
 
-1. Initialize/apply this repo with chezmoi:
+Initialize the source checkout and review what chezmoi would install.
 
-```bash
-chezmoi init --apply <git-repo-url>
+```sh
+chezmoi init https://github.com/t0nylombardi/elfuegodots.git
+chezmoi diff
 ```
 
-2. Install packages from `Brewfile` (macOS/Homebrew):
+On macOS, install the packages from the Brewfile.
 
-```bash
-brew bundle --file ~/.local/share/chezmoi/Brewfile
+```sh
+brew bundle --file "$(chezmoi source-path)/Brewfile"
 ```
 
-3. Start a new shell session:
+On Debian, install the shell and terminal tools and Neovim plugin build dependencies.
 
-```bash
-exec zsh
+```sh
+sudo apt update
+sudo apt install zsh tmux fzf ripgrep fd-find zoxide zsh-syntax-highlighting \
+  ncurses-term build-essential git unzip ca-certificates curl
+```
+
+Debian provides `fd-find` as `fdfind`. Follow the Neovim instructions below
+to install a compatible editor. GUI terminal emulators are optional.
+
+After reviewing the diff and installing dependencies, apply the files and start
+a login shell.
+
+```sh
+chezmoi apply
+exec zsh -l
 ```
 
 ## Neovim on Debian
@@ -51,15 +65,14 @@ amd64 or arm64. It verifies the release checksum, installs under
 `~/.local/opt/neovim`, and links `~/.local/bin/nvim` as your user.
 
 ```sh
-sudo apt install ca-certificates curl
-./bootstrap/install-neovim.sh
-nvim --version
+"$(chezmoi source-path)/bootstrap/install-neovim.sh"
+"$HOME/.local/bin/nvim" --version
 ```
 
-The Zsh configuration puts `~/.local/bin` on `PATH`. Start a new login shell
-if the version check still finds the APT copy. You can use APT directly on
-Debian releases that provide Neovim 0.11.3 or newer. If you already have the
-plugins installed, run `:Lazy restore` to apply the updated Treesitter pin.
+The Zsh configuration puts `~/.local/bin` on `PATH` when you start a new shell.
+You can use APT directly on Debian releases that provide Neovim 0.11.3 or newer.
+If you already have the plugins installed, run `:Lazy restore` to apply the
+updated Treesitter pin.
 
 ## Notes
 
