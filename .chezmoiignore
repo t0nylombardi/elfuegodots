@@ -3,6 +3,8 @@
 .config/configstore/**
 .config/chezmoi/**
 .config/**/logs/**
+bootstrap
+bootstrap/**
 {{ if ne .chezmoi.os "darwin" }}
 .config/zsh
 {{ end }}

@@ -58,6 +58,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'master', -- This config uses the legacy nvim-treesitter.configs API.
     build = ':TSUpdate',
     opts = {
       ensure_installed = {
@@ -69,8 +70,7 @@ return {
         'go',
         'typescript',
         'tsx',
-        'javascript',
-        'jsx',
+        'javascript', -- Also provides JSX support.
         'astro',
         'json',
         'html',
