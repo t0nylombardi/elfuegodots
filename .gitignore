@@ -1,0 +1,17 @@
+# Machine-local credentials and installation state
+/dot_config/atuin/atuin-receipt.json
+/dot_config/bootdev/
+/dot_config/gh/private_hosts.yml
+/dot_config/ngrok/
+
+# Nested repositories and generated application state
+dot_git/
+dot_DS_Store
+.DS_Store
+/dot_config/**/code_output.txt
+/dot_config/QtProject/
+/dot_config/lite-xl/font_cache.lua
+/dot_config/lite-xl/session.lua
+/dot_config/lite-xl/user_settings.lua
+/dot_config/lite-xl/ws/
+/dot_config/zed/prompts/
