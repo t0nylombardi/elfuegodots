@@ -1,0 +1,389 @@
+{
+  "security.workspace.trust.enabled": false,
+  /**
+    * General UX & Editor Behavior
+    */
+  "editor.emptySelectionClipboard": true,
+  "editor.matchBrackets": "never",
+  "editor.renderLineHighlight": "none",
+  "editor.snippetSuggestions": "top",
+  "editor.lineNumbers": "on",
+  "editor.detectIndentation": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.guides.highlightActiveIndentation": "always",
+  "editor.guides.indentation": true,
+  "editor.showFoldingControls": "never",
+  "editor.renderWhitespace": "none",
+  "editor.occurrencesHighlight": "on",
+  "editor.selectionHighlight": true,
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.scrollbar.vertical": "hidden",
+  "editor.overviewRulerBorder": false,
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.quickSuggestions": {
+    "other": "on"
+  },
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.tabCompletion": "on",
+  "editor.lightbulb.enabled": "off",
+  "editor.colorDecorators": true,
+  "editor.links": true,
+  "editor.codeLens": false,
+  "editor.hover.enabled": "on",
+  "editor.parameterHints.enabled": false,
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+
+
+
+  /**
+    * Typography
+    */
+  "editor.fontFamily": "MesloLGS Nerd Font Mono",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 15,
+  "editor.lineHeight": 1.8,
+  "editor.letterSpacing": 0.1,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "comment",
+        "settings": {
+          "fontStyle": ""
+        }
+      }
+    ]
+  },
+  "terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.lineHeight": 1.2,
+  "window.titleBarStyle": "native",
+  "window.nativeFullScreen": false,
+  "window.newWindowDimensions": "inherit",
+  "custom-ui-style.electron": {
+    "titleBarStyle": "hiddenInset",
+    "trafficLightPosition": {
+      "x": 20,
+      "y": 16
+    }
+  },
+  "custom-ui-style.stylesheet": {
+    ".notification-toast": "box-shadow: none !important",
+    ".quick-input-widget.show-file-icons": "box-shadow: none !important",
+    ".quick-input-widget": "top: 25vh !important",
+    ".quick-input-list .scrollbar": "display: none",
+    ".monaco-action-bar.quick-input-inline-action-bar": "display: none",
+    ".editor-widget.find-widget": "box-shadow: none; border-radius: 4px",
+    ".quick-input-titlebar": "background: #100B15 !important",
+    ".monaco-workbench .part.editor > .content .editor-group-container > .title.title-border-bottom:after": "display: none",
+    ".monaco-scrollable-element > .shadow.top": "display: none",
+    ".sidebar .title-label": "padding: 0 !important",
+    ".sidebar": "border: none !important",
+    ".monaco-workbench .monaco-list:not(.element-focused):focus:before": "outline: none !important",
+    ".monaco-list-row.focused": "outline: none !important",
+    ".monaco-editor .scroll-decoration": "display: none",
+    ".title-actions": "display: none !important",
+    ".title.show-file-icons .label-container .monaco-icon-label.file-icon": "justify-content: center; padding: 0 !important",
+    ".title .monaco-icon-label:after": "margin-right: 0",
+    ".monaco-workbench .part.editor > .content .editor-group-container > .title > .label-container > .title-label": "padding-left: 100px",
+    ".title .monaco-icon-label.file-icon": "margin: 0 60px",
+    ".monaco-editor .cursors-layer .cursor": "background-image: linear-gradient(135deg, #ffaffc 10%, #DA70D6 100%); index: -1 "
+  },
+  "workbench.colorTheme": "Catppuccin Noctis Macchiato",
+  "workbench.iconTheme": "catppuccin noctis icons",
+  "workbench.editor.showTabs": "multiple",
+  "workbench.editor.enablePreview": true,
+  "workbench.statusBar.visible": true,
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.tree.renderIndentGuides": "onHover",
+  "workbench.tree.indent": 16,
+  "workbench.activityBar.location": "top",
+  "workbench.sideBar.location": "left",
+  "workbench.colorCustomizations": {
+    "editorCursor.background": "#24273a00",
+    "editorOverviewRuler.wordHighlightStrongForeground": "#24273a00",
+    "editorOverviewRuler.selectionHighlightForeground": "#24273a00",
+    "editorOverviewRuler.rangeHighlightForeground": "#24273a00",
+    "editorOverviewRuler.wordHighlightForeground": "#24273a00",
+    "editorOverviewRuler.bracketMatchForeground": "#24273a00",
+    "editorOverviewRuler.findMatchForeground": "#24273a00",
+    "editorOverviewRuler.modifiedForeground": "#24273a00",
+    "editorOverviewRuler.deletedForeground": "#24273a00",
+    "editorOverviewRuler.warningForeground": "#24273a00",
+    "editorOverviewRuler.addedForeground": "#24273a00",
+    "editorOverviewRuler.errorForeground": "#24273a00",
+    "editorOverviewRuler.infoForeground": "#24273a00",
+    "editorOverviewRuler.border": "#24273a00",
+  },
+
+  /**
+    * Files & Formatting
+    */
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "*.rb": "ruby",
+    "Gemfile": "ruby",
+    "Rakefile": "ruby"
+  },
+
+  /**
+    * Git
+    */
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.rebaseWhenSync": true,
+  "git.verboseCommit": true,
+  "git.enableSmartCommit": true,
+  "git.useCommitInputAsStashMessage": true,
+  "git.alwaysShowStagedChangesResourceGroup": true,
+  "git.decorations.enabled": false,
+  "window.zoomLevel": 0,
+
+  /**
+    * Language-Specific Formatting
+    */
+  "editor.rulers": [120],
+
+  "[ruby]": {
+  "editor.defaultFormatter": "Shopify.ruby-lsp",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.semanticHighlighting.enabled": true,
+  "editor.formatOnType": true,
+  "editor.rulers": [120]
+},
+  "rubyLsp.formatter": "standard",
+  "rubyLsp.linters": ["standard"],
+  "rubyLsp.rubyVersionManager": {
+    "identifier": "rbenv"
+  },
+  "rubyLsp.addonSettings": {},
+  "rubyLsp.enabledFeatures": {
+    "codeActions": true,
+    "diagnostics": true,
+    "documentHighlights": true,
+    "documentLink": true,
+    "documentSymbols": true,
+    "foldingRanges": true,
+    "formatting": true,
+    "hover": true,
+    "inlayHint": false,
+    "onTypeFormatting": true,
+    "selectionRanges": true,
+    "semanticHighlighting": true,
+    "completion": false,
+    "codeLens": true,
+    "definition": true,
+    "workspaceSymbol": true,
+    "signatureHelp": true
+  },
+
+  "[elixir]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.wordBasedSuggestions": "off",
+    "editor.formatOnType": true,
+    "editor.trimAutoWhitespace": false,
+    "editor.snippetSuggestions": "inline",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  },
+
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua",
+    "editor.formatOnSave": true,
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": false, // disable default behavior
+    "editor.codeActionsOnSave": {
+      "source.format.oxc": "always", // run formatter first
+      "source.fixAll.oxc": "always", // run lint fixes after
+    },
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": true,
+    "files.autoSave": "onFocusChange"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": false, // disable default behavior
+    "editor.codeActionsOnSave": {
+      "source.format.oxc": "always", // run formatter first
+      "source.fixAll.oxc": "always", // run lint fixes after
+    },
+    "editor.formatOnSaveMode": "file",
+  },
+  "[html]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": false,
+
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "javascript": "javascriptreact",
+    "javascriptreact": "javascriptreact",
+    "typescript": "typescriptreact",
+    "typescriptreact": "typescriptreact",
+    "html": "html",
+    "css": "css",
+    "scss": "scss"
+  },
+  "tailwindCSS.emmetCompletions": true,
+
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.snippetSuggestions": "top",
+    "editor.rulers": [120],
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  },
+
+  /**
+    * Go
+    */
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    },
+    "editor.rulers": [120],
+    "editor.snippetSuggestions": "top",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "go.useLanguageServer": true,
+  "go.formatTool": "goimports",
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"],
+  "go.lintOnSave": "package",
+  "go.coverOnSingleTestFile": true,
+  "go.coverOnSingleTest": true,
+  "go.coverMode": "default",
+  "gopls": {
+    "ui.semanticTokens": true
+  },
+
+  /**
+    * Python
+    */
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.snippetSuggestions": "top",
+    "editor.rulers": [100],
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll": "explicit"
+    },
+  },
+  "python.REPL.provideVariables": false,
+  "python.REPL.enableREPLSmartSend": false,
+  "python.terminal.shellIntegration.enabled": false,
+  "python.terminal.useEnvFile": true,
+
+  /**
+    * Rust
+    */
+
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true,
+    "editor.snippetSuggestions": "none",
+    "editor.inlayHints.enabled": "off",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.rulers": [100],
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll": "explicit"
+    },
+  },
+
+  /**
+    * Miscellaneous
+    */
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.cursorBlinking": "solid",
+  "editor.cursorWidth": 6,
+  "editor.cursorSurroundingLines": 48,
+  "editor.cursorSurroundingLinesStyle": "default",
+  "editor.cursorStyle": "block",
+  "update.mode": "start",
+  "diffEditor.ignoreTrimWhitespace": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "yard.spacers.afterTags": false,
+  "yard.spacers.beforeDescription": false,
+  "breadcrumbs.enabled": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "terminal.external.osxExec": "WezTerm.app",
+  "telemetry.telemetryLevel": "off",
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  /**
+    * Indent Rainbow
+  */
+  "indentRainbow.indicatorStyle": "light",
+  "indentRainbow.lightIndicatorStyleLineWidth": 1,
+  "indentRainbow.errorColor": "rgba(237, 135, 150, 0.8)",
+  "indentRainbow.colors": [
+    "rgba(238, 212, 159, 0.7)",
+    "rgba(166, 218, 149, 0.7)",
+    "rgba(245, 189, 230, 0.7)",
+    "rgba(145, 215, 227, 0.7)",
+    "rgba(245, 169, 127, 0.7)",
+    "rgba(138, 173, 244, 0.7)"
+  ],
+  "go.toolsManagement.autoUpdate": true,
+  "explorer.confirmDelete": false,
+  "git.blame.editorDecoration.enabled": true,
+  "workbench.editor.editorActionsLocation": "titleBar",
+  "chat.viewSessions.orientation": "stacked",
+  "workbench.browser.showInTitleBar": true,
+  "terminal.integrated.tabs.enabled": false,
+  "python.languageServer": "Default",
+  "catppuccin-noctis-icons.hidesExplorerArrows": false,
+  "editor.minimap.enabled": false,
+  "terminal.integrated.initialHint": false,
+  "git.openRepositoryInParentFolders": "always",
+  "chatgpt.openOnStartup": true,
+
+}
