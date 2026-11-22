@@ -34,3 +34,7 @@ bootstrap/**
 {{ if ne .chezmoi.os "darwin" }}
 .config/zsh
 {{ end }}
+
+{{ if eq .chezmoi.os "linux" }}
+.config/zed
+{{ end }}
