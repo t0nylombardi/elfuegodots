@@ -78,3 +78,24 @@ updated Treesitter pin.
 
 - Some plugin directories are vendored in-tree under `dot_config/tmux/plugins/...`.
 - This is a personal setup; feel free to fork and trim tools/plugins you do not use.
+
+## Switching between macOS and Linux
+
+Use the same chezmoi source on both systems. After pulling changes, review and
+apply them on each machine.
+
+```sh
+chezmoi git -- pull --ff-only
+chezmoi diff
+chezmoi apply
+```
+
+Keep shared settings in the existing source files. Use chezmoi's
+`.chezmoi.os` value (`darwin` or `linux`) for settings that genuinely differ
+between platforms. Install system packages using the steps for that machine
+above. Keep authentication, app databases, and generated state local.
+
+The macOS-only `~/.config/zsh` symlink currently expects a machine-local
+target. Before applying on a Mac, inspect the expected target with
+`chezmoi cat ~/.config/zsh` and verify that the target directory exists and
+contains the settings you expect. The link is excluded on Linux.
