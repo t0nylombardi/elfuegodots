@@ -1,21 +1,37 @@
 local wezterm = require('wezterm')
 
+local function find_executable(name)
+  local path = os.getenv('PATH') or ''
+
+  if wezterm.target_triple:find('apple%-darwin') then
+    path = path .. ':/opt/homebrew/bin:/usr/local/bin'
+  end
+
+  for directory in path:gmatch('[^:]+') do
+    local executable = directory .. '/' .. name
+    local file = io.open(executable, 'r')
+
+    if file then
+      file:close()
+      return executable
+    end
+  end
+
+  return nil
+end
+
 local launch_menu = {
   { label = 'Bash', args = { 'bash', '-l' } },
   { label = 'Zsh', args = { 'zsh', '-l' } },
 }
 
-local find_nu = 'command -v nu'
-if wezterm.target_triple:find('apple%-darwin') then
-  find_nu = 'PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"; ' .. find_nu
-end
+local nu = find_executable('nu')
 
-local found, output = wezterm.run_child_process({ '/bin/sh', '-c', find_nu })
-if found then
-  local nu = output:match('^([^\r\n]+)')
-  if nu then
-    table.insert(launch_menu, 2, { label = 'Nushell', args = { nu, '-l' } })
-  end
+if nu then
+  table.insert(launch_menu, 2, {
+    label = 'Nushell',
+    args = { nu, '-l' },
+  })
 end
 
 return {
