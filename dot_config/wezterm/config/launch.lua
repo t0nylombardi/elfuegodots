@@ -10,10 +10,12 @@ if wezterm.target_triple:find('apple%-darwin') then
   find_nu = 'PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"; ' .. find_nu
 end
 
-local found, output = wezterm.run_child_process({ '/bin/sh', '-c', find_nu })
-if found then
-  local nu = output:match('^([^\r\n]+)')
-  if nu then
+-- require() cannot yield while loading this module.
+local lookup = io.popen(find_nu, 'r')
+if lookup then
+  local nu = lookup:read('*l')
+  local found = lookup:close()
+  if found and nu and nu ~= '' then
     table.insert(launch_menu, 2, { label = 'Nushell', args = { nu, '-l' } })
   end
 end

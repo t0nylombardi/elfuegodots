@@ -3,12 +3,13 @@ local platform = require('utils.platform')
 
 local font_family = 'MesloLGS Nerd Font Mono'
 
-local font_size = 18
+local is_macos = wezterm.target_triple:match('apple%-darwin$') ~= nil
+local font_size = is_macos and 18 or 14
 
 return {
   font = wezterm.font({
     family = font_family,
-    weight = 'Medium',
+    weight = 'Regular',
   }),
   font_size = font_size,
 
